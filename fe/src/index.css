@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+.modal-background{
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+.box-shadow{
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+.box-shadow-second{
+
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+.box-shadow-third{
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+}
+
+.bg-gradient {
+    background: linear-gradient(to right, #6856f4, white);
+  }
+
+*{
+    font-family: 'Inter', sans-serif;
+}
