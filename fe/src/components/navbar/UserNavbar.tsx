@@ -60,10 +60,9 @@ const UserNavbar = ({ setOpenSideBar, openSideBar }: props) => {
           shadow ? "shadow-md" : ""
         } transition-all duration-300 ease-in-out z-30`}
       >
-        <div className="flex justify-between px-3 items-center md:px-10 py-4 w-full md:w-11/12 mx-auto">
+        <div className="flex justify-between items-center max-w-7xl mx-auto py-4 w-full mx-auto">
           <div className="flex items-center gap-10">
             <GiHamburgerMenu
-              color="#5f19f4"
               onClick={
                 function(){
                   setOpenSideBar(true)
@@ -74,9 +73,9 @@ const UserNavbar = ({ setOpenSideBar, openSideBar }: props) => {
             />
             <h1
               onClick={() => navigate("/dashboard")}
-              className="text-3xl hidden md:block cursor-pointer uppercase font-bold text-[#5f19f4]"
+              className="text-3xl hidden md:block cursor-pointer uppercase font-bold tracking-widest font-lato"
             >
-              Inventory
+              Gadgetify
             </h1>
           </div>
           <div className="flex items-center gap-5">

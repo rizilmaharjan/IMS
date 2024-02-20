@@ -7,19 +7,20 @@ export default function UserLayout() {
 
   return (
     <>
-
-      <UserNavbar
-        setOpenSideBar={(val) => setOpenSideBar(val)}
-        openSideBar={openSideBar}
+        <UserNavbar
+          setOpenSideBar={(val) => setOpenSideBar(val)}
+          openSideBar={openSideBar}
         />
-      {openSideBar && (
+        {openSideBar && (
           <SideBarModal
-          showSideBar={openSideBar}
-          closeSideBar={(val) => setOpenSideBar(val)}
+            showSideBar={openSideBar}
+            closeSideBar={(val) => setOpenSideBar(val)}
           />
-          )}
-      <div>
-        <Outlet />
+        )}
+      <div className="max-w-7xl mx-auto">
+        <div>
+          <Outlet />
+        </div>
       </div>
     </>
   );
