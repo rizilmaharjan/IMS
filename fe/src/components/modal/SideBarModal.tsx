@@ -30,15 +30,15 @@ const SideBarModal = ({ closeSideBar, showSideBar }: ISideBarProps) => {
       >
         <div
           onClick={handleClose}
-          className={`bg-white absolute py-5 px-4 ${
-            showSideBar ? "left-0 top-0 bottom-0 w-72" : "left-[-100%]"
+          className={`bg-white absolute py-5 ${
+            showSideBar ? "left-0 top-0 bottom-0 w-72 px-8" : "left-[-100%]"
           } transition-all duration-300 ease-in-out`}
         >
           <h1
             onClick={() => navigate("/dashboard")}
-            className="text-2xl font-bold uppercase"
+            className="text-2xl font-bold uppercase tracking-wider font-lato"
           >
-            inventory
+            GADGETIFY
           </h1>
           <ul className="mt-8 relative h-full">
             <li className="">
