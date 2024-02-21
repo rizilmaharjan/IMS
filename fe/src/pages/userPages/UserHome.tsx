@@ -4,6 +4,7 @@ import UserNavbar from "../../components/navbar/UserNavbar";
 import Arrivals from "../../components/user/Arrivals";
 import About from "../../components/user/About";
 import Contactus from "../../components/user/Contactus";
+import Footer from "../../components/user/Footer";
 export const UserHome = () => {
   const navigate = useNavigate();
   return (
@@ -41,6 +42,8 @@ export const UserHome = () => {
       <Arrivals />
       {/* contact us */}
       <Contactus />
+      {/* footer */}
+      <Footer />
 
 
     </>

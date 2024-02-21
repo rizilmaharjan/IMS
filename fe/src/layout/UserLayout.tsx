@@ -2,7 +2,6 @@ import { useState } from "react";
 import SideBarModal from "../components/modal/SideBarModal";
 import UserNavbar from "../components/navbar/UserNavbar";
 import { Outlet } from "react-router-dom";
-import Footer from "../components/user/Footer";
 export default function UserLayout() {
   const [openSideBar, setOpenSideBar] = useState(false);
 
@@ -24,7 +23,6 @@ export default function UserLayout() {
         </div>
       </div>
 
-      <Footer /> 
 
     </>
   );

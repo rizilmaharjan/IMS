@@ -102,8 +102,7 @@ const PlaceOrder = ({ productDetails, closeModal }: IPlaceOrder) => {
                 Brand: <span className="uppercase">{productDetails.brand}</span>
               </div>
               <div className="mt-1">
-                Product Type:
-                <span className="capitalize">{productDetails.category}</span>
+                Product Type: <span className="capitalize">{productDetails.category}</span>
               </div>
               <div className="mt-6">
                 <div className="flex gap-14 uppercase font-bold">

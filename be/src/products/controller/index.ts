@@ -12,8 +12,10 @@
     }
 
     export const getProducts = async(req:Request, res:Response)=>{
+        const page = parseInt(req.query.page as string) || 1;
+        const limit = parseInt(req.query.limit as string) || 8;
         try {
-            const response = await Fetch()
+            const response = await Fetch(page,limit)
             res.status(response.status).json({message:response.message, data:response.data, status:response.status})
         } catch (error) {
             res.status(400).json(error)

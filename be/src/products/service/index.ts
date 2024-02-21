@@ -16,9 +16,9 @@ export const Create = async(product:IProduct)=>{
 }
 
 
-export const Fetch = async()=>{
+export const Fetch = async(page:number, limit:number)=>{
     try {
-        const response = await fetchProducts()
+        const response = await fetchProducts(page, limit)
         return response
 
     } catch (error) {
