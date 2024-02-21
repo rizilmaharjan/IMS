@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import UserNavbar from "../../components/navbar/UserNavbar";
 import Arrivals from "../../components/user/Arrivals";
 import About from "../../components/user/About";
+import Contactus from "../../components/user/Contactus";
 export const UserHome = () => {
   const navigate = useNavigate();
   return (
@@ -35,9 +36,11 @@ export const UserHome = () => {
         </div>
       </div>
       {/* about */}
-      {/* <About /> */}
+      <About />
       {/* arrivals */}
       <Arrivals />
+      {/* contact us */}
+      <Contactus />
 
 
     </>

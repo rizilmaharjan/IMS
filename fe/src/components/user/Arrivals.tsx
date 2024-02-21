@@ -25,7 +25,7 @@ export default function Arrivals() {
 
   return (
     <>
-      <section>
+      <section className="mt-32">
         <h2 className="text-3xl text-center font-lato font-semibold tracking-wider">
           NEW ARRIVALS
         </h2>
