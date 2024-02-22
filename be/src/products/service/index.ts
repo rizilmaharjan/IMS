@@ -46,9 +46,13 @@ export const productOrder = async (order: IOrder) => {
   }
 };
 
-export const fetchOrders = async (page: number, limit: number) => {
+export const fetchOrders = async (
+  page: number,
+  limit: number,
+  pending?: string
+) => {
   try {
-    const response = await getOrders(page, limit);
+    const response = await getOrders(page, limit, pending);
     return response;
   } catch (error) {
     throw new Error("Failed to get orders");

@@ -65,8 +65,9 @@ export const createOrder = async (req: Request, res: Response) => {
 export const getOrders = async (req: Request, res: Response) => {
   const page = parseInt(req.query.page as string) || 1;
   const limit = parseInt(req.query.limit as string) || 6;
+  const pending = req.query.pending as string;
   try {
-    const response = await fetchOrders(page, limit);
+    const response = await fetchOrders(page, limit, pending);
     res.json({
       message: response?.message,
       data: response?.data,

@@ -9,9 +9,9 @@ const SingleUser = () => {
   const { id } = useParams();
   const { userData, orderInfo } = useCustomContext();
   const [singleUser, setSingleUser] = useState<User | null>(null);
-  const [singleUserTransaction, setSingleUserTransaction] = useState<
-    Order[]
-  >([]);
+  const [singleUserTransaction, setSingleUserTransaction] = useState<Order[]>(
+    []
+  );
 
   useEffect(() => {
     const user = userData?.find((item: User) => item._id === id);
@@ -19,9 +19,7 @@ const SingleUser = () => {
   }, [userData]);
 
   useEffect(() => {
-    const userOrder = orderInfo?.filter(
-      (item: Order) => item.orderedId === singleUser?.username
-    );
+    const userOrder = orderInfo?.filter((item: Order) => item.orderedId === id);
     setSingleUserTransaction(userOrder);
   }, [singleUser, orderInfo]);
 
@@ -89,7 +87,7 @@ const SingleUser = () => {
                     <tr>
                       <th className="text-center">SN</th>
                       <th className="text-center">Product</th>
-                      <th className="text-center">Ordered By</th>
+                      {/* <th className="text-center">Ordered By</th> */}
                       <th className="text-center">Status</th>
                       <th className="text-center">Color</th>
                       <th className="text-center">Quantity</th>
@@ -108,9 +106,9 @@ const SingleUser = () => {
                           />
                           {item?.name}{" "}
                         </td>
-                        <td className="capitalize text-center">
+                        {/* <td className="capitalize text-center">
                           {item?.orderedId}
-                        </td>
+                        </td> */}
                         <td
                           className={`capitalize text-center  font-semibold ${
                             item?.status === "approved"

@@ -8,10 +8,50 @@ import Chart from "../chart/Chart";
 import { useCustomContext } from "../../context/Context";
 import { useState, useEffect } from "react";
 import { Order } from "../../context/context.types";
+import { useGet } from "../../hooks/get/useGet";
 
 const Welcome = () => {
   const navigate = useNavigate();
-  const { productData, userData, orderInfo, totalOrders } = useCustomContext();
+  const { response: userResponse } = useGet(
+    "http://localhost:8000/user/api/users"
+  );
+  const { response: productResponse } = useGet(
+    "http://localhost:8000/product/api/products"
+  );
+  const { response: orderResponse } = useGet(
+    "http://localhost:8000/product/api/orders"
+  );
+  const {
+    productData,
+    userData,
+    orderInfo,
+    totalOrders,
+    setTotalOrders,
+    setOrderInfo,
+    setUserData,
+    setProductData,
+  } = useCustomContext();
+
+  useEffect(() => {
+    setUserData(userResponse?.data);
+  }, [userResponse]);
+
+  useEffect(() => {
+    setProductData(productResponse?.data);
+  }, [productResponse]);
+
+  useEffect(() => {
+    setOrderInfo(orderResponse?.data);
+    console.log("this is order response", orderResponse);
+  }, [orderResponse]);
+  useEffect(() => {
+    setTotalOrders(orderResponse?.totalOrders);
+  }, [orderResponse]);
+
+  // console.log("userResponse", userResponse);
+  // console.log("productResponse", productResponse);
+  // console.log("orderResponse", orderResponse);
+
   const [totalEarnings, setTotalEarnings] = useState(0);
   useEffect(() => {
     let earnedTotal = 0;

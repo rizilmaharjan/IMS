@@ -98,14 +98,29 @@ export const createOrder = async (order: IOrder) => {
   }
 };
 
-export const getOrders = async (page: number, limit: number) => {
+export const getOrders = async (
+  page: number,
+  limit: number,
+  pending?: string
+) => {
   try {
+    let query: any = {}; // Initialize an empty query object
+
+    // If the 'pending' query parameter is 'true', filter by pending status
+    if (pending === "true") {
+      query.status = "pending";
+    }
+
     // *fetch the total count of orders
     const totalOrders = await orderCollection.countDocuments({
       status: "pending",
     });
     const findOrders = await orderCollection
       .aggregate([
+        {
+          $match: query,
+        },
+
         {
           $lookup: {
             from: "users", // The name of the users collection

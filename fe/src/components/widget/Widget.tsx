@@ -39,6 +39,7 @@ const Widgets = ({
 }: props) => {
   const navigate = useNavigate();
   console.log("hamro order", orderData);
+  console.log("userdatas", userData);
 
   const filteredOrderedData =
     orderData && orderData?.filter((item) => item.status === "pending");

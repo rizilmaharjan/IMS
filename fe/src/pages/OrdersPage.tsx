@@ -1,5 +1,5 @@
 import { useCustomContext } from "../context/Context";
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import { useEffect, useState } from "react";
 import { AiOutlineCheck } from "react-icons/ai";
 import { RxCross1 } from "react-icons/rx";
@@ -7,11 +7,31 @@ import { Order, Product } from "../context/context.types";
 import { useGet } from "../hooks/get/useGet";
 
 const OrdersPage = () => {
-  const { setProductData, productData, setStatus, orderInfo, setOrderInfo } =
-    useCustomContext();
-  const { fetchDatas, response } = useGet();
+  const {
+    setProductData,
+    productData,
+    setStatus,
+    orderInfo,
+    setTotalOrders,
+    setOrderInfo,
+  } = useCustomContext();
   const [items, setItems] = useState<Order[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [userOrderInfo, setUserOrderInfo] = useState<Order[]>([]);
+
+  useEffect(() => {
+    const fetchUserOrders = async () => {
+      try {
+        const res = await axios.get(
+          `http://localhost:8000/product/api/orders?page=${currentPage}&pending=true`
+        );
+        setUserOrderInfo(res?.data.data);
+      } catch (error) {
+        console.log("error", error);
+      }
+    };
+    fetchUserOrders();
+  }, [currentPage]);
 
   const handleOrder = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
@@ -52,24 +72,6 @@ const OrdersPage = () => {
     }
   };
 
-  useEffect(() => {
-    const filteredOrderedData = orderInfo?.filter(
-      (item: Order) => item.status === "pending"
-    );
-    setItems(filteredOrderedData);
-  }, [orderInfo]);
-
-  useEffect(() => {
-    fetchDatas(`http://localhost:8000/product/api/orders?page=${currentPage}`);
-  }, [currentPage]);
-
-  // const { response: userOrder, fetchError: userOrderError } = useGet(
-  //   "http://localhost:8000/product/api/orders"
-  // );
-  useEffect(() => {
-    setOrderInfo(response?.data);
-  }, [response]);
-
   const handleNextPage = () => {
     setCurrentPage((prev) => prev + 1);
   };
@@ -91,8 +93,8 @@ const OrdersPage = () => {
             </tr>
           </thead>
           <tbody>
-            {items?.length > 0 ? (
-              items?.map((item, indx: number) => (
+            {userOrderInfo?.length > 0 ? (
+              userOrderInfo?.map((item, indx: number) => (
                 <tr
                   className="text-center cursor-pointer border"
                   key={item._id}
