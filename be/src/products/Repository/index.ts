@@ -38,10 +38,14 @@ export const create = async (product: IProduct) => {
   }
 };
 
-export const fetchProducts = async (page:number, limit:number) => {
-  console.log("page", page)
+export const fetchProducts = async (page: number, limit: number) => {
+  console.log("page", page);
   try {
-    const findProducts = await productCollection.find().skip((page-1)*limit).limit(limit).toArray();
+    const findProducts = await productCollection
+      .find()
+      .skip((page - 1) * limit)
+      .limit(limit)
+      .toArray();
     if (!findProducts) return { status: 404, message: "Products not found" };
     return {
       status: 200,
@@ -73,10 +77,10 @@ export const createOrder = async (order: IOrder) => {
   const { orderedId } = order;
   try {
     // if(findProduct) {
-      const findUserId =  await userCollection.findOne({username:orderedId});
+    const findUserId = await userCollection.findOne({ username: orderedId });
     const postProduct = await orderCollection.insertOne({
       ...order,
-      orderedId:findUserId._id
+      orderedId: findUserId._id,
     });
     if (postProduct.acknowledged) {
       const insertedProduct = await orderCollection.findOne({
@@ -94,21 +98,29 @@ export const createOrder = async (order: IOrder) => {
   }
 };
 
-export const getOrders = async () => {
+export const getOrders = async (page: number, limit: number) => {
   try {
-    const findOrders = await orderCollection.aggregate([
-      {
-        $lookup: {
-          from: 'users', // The name of the users collection
-          localField: 'orderedId', // The field in the orders collection
-          foreignField: '_id', // The field in the users collection
-          as: 'user'
-        }
-      },
-      {
-        $unwind: '$user' // Deconstruct the array field 'user'
-      }
-    ]).toArray();
+    // *fetch the total count of orders
+    const totalOrders = await orderCollection.countDocuments({
+      status: "pending",
+    });
+    const findOrders = await orderCollection
+      .aggregate([
+        {
+          $lookup: {
+            from: "users", // The name of the users collection
+            localField: "orderedId", // The field in the orders collection
+            foreignField: "_id", // The field in the users collection
+            as: "user",
+          },
+        },
+        {
+          $unwind: "$user", // Deconstruct the array field 'user'
+        },
+      ])
+      .skip((page - 1) * limit)
+      .limit(limit)
+      .toArray();
 
     if (!findOrders) return { status: 404, message: "Orders not found" };
 
@@ -116,12 +128,12 @@ export const getOrders = async () => {
       status: 200,
       message: "Orders successfully fetched",
       data: findOrders,
+      totalOrders: totalOrders,
     };
   } catch (error) {
     return { status: 500, message: "Error occurred" };
   }
 };
-
 
 export const updateOrders = async (id: string, status: IStatus) => {
   try {
@@ -169,22 +181,22 @@ export const updateOrders = async (id: string, status: IStatus) => {
   }
 };
 
-export const deleteOrders = async(id: string)=>{
+export const deleteOrders = async (id: string) => {
   const orderId = new ObjectId(id);
 
   try {
-    const deleteOrder = await orderCollection.findOneAndDelete({_id:orderId})
-    if(deleteOrder.value){
-      return {status: 200, message: "order deleted successfully"}
-    }else{
-      return {status:404, message: "Product not found"};
+    const deleteOrder = await orderCollection.findOneAndDelete({
+      _id: orderId,
+    });
+    if (deleteOrder.value) {
+      return { status: 200, message: "order deleted successfully" };
+    } else {
+      return { status: 404, message: "Product not found" };
     }
-    
   } catch (error) {
-    return {status:500, message:"Error occured"};
-    
+    return { status: 500, message: "Error occured" };
   }
-}
+};
 
 export const updateProducts = async (id: string, productData: IProduct) => {
   try {

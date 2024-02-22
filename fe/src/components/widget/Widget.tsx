@@ -17,6 +17,7 @@ type props = {
   userData?: User[];
   orderData?: Order[];
   earnings?: any;
+  totalOrders?: number;
 };
 
 type Data = {
@@ -34,12 +35,14 @@ const Widgets = ({
   userData,
   orderData,
   earnings,
+  totalOrders,
 }: props) => {
   const navigate = useNavigate();
   console.log("hamro order", orderData);
 
   const filteredOrderedData =
     orderData && orderData?.filter((item) => item.status === "pending");
+
   let data: Data = {
     title: "",
     isMoney: false,
@@ -74,7 +77,7 @@ const Widgets = ({
         link: "View all Orders",
         icon: <AccountBalanceWalletOutlinedIcon className="text-[purple]" />,
 
-        total: filteredOrderedData?.length,
+        total: totalOrders,
         redirect: "orders",
       };
       break;

@@ -4,13 +4,19 @@ import { useEffect, useState } from "react";
 import { AiOutlineCheck } from "react-icons/ai";
 import { RxCross1 } from "react-icons/rx";
 import { Order, Product } from "../context/context.types";
+import { useGet } from "../hooks/get/useGet";
 
 const OrdersPage = () => {
   const { setProductData, productData, setStatus, orderInfo, setOrderInfo } =
     useCustomContext();
+  const { fetchDatas, response } = useGet();
   const [items, setItems] = useState<Order[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
 
-  const handleOrder = async (e:React.MouseEvent<HTMLButtonElement, MouseEvent>, id:string) => {
+  const handleOrder = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    id: string
+  ) => {
     try {
       const res = await axios.patch(
         `http://localhost:8000/product/api/orders/${id}`,
@@ -19,7 +25,7 @@ const OrdersPage = () => {
         }
       );
       if (res.status === 200) {
-        const updatedOrders = orderInfo.map((item:Order) => {
+        const updatedOrders = orderInfo.map((item: Order) => {
           if (item._id === res?.data.data._id) {
             return {
               ...item,
@@ -32,7 +38,7 @@ const OrdersPage = () => {
       }
 
       if (res.status === 200 && res?.data.data.status === "approved") {
-        const updatedData = productData.map((item:Product) => {
+        const updatedData = productData.map((item: Product) => {
           if (item.name === res?.data.data.name) {
             setStatus("approved");
             return { ...item, stock: item.stock - res.data.data.noOfProducts };
@@ -48,10 +54,28 @@ const OrdersPage = () => {
 
   useEffect(() => {
     const filteredOrderedData = orderInfo?.filter(
-      (item:Order) => item.status === "pending"
+      (item: Order) => item.status === "pending"
     );
     setItems(filteredOrderedData);
   }, [orderInfo]);
+
+  useEffect(() => {
+    fetchDatas(`http://localhost:8000/product/api/orders?page=${currentPage}`);
+  }, [currentPage]);
+
+  // const { response: userOrder, fetchError: userOrderError } = useGet(
+  //   "http://localhost:8000/product/api/orders"
+  // );
+  useEffect(() => {
+    setOrderInfo(response?.data);
+  }, [response]);
+
+  const handleNextPage = () => {
+    setCurrentPage((prev) => prev + 1);
+  };
+  const handlePrevPage = () => {
+    setCurrentPage((prev) => Math.max(prev - 1, 1));
+  };
 
   return (
     <>
@@ -67,8 +91,8 @@ const OrdersPage = () => {
             </tr>
           </thead>
           <tbody>
-            {items.length > 0 ? (
-              items.map((item, indx: number) => (
+            {items?.length > 0 ? (
+              items?.map((item, indx: number) => (
                 <tr
                   className="text-center cursor-pointer border"
                   key={item._id}
@@ -99,11 +123,30 @@ const OrdersPage = () => {
               ))
             ) : (
               <tr>
-                <td className="py-80 text-center text-4xl text-gray-400 font-semibold" colSpan={5}>No Orders Yet</td>
+                <td
+                  className="py-80 text-center text-4xl text-gray-400 font-semibold"
+                  colSpan={5}
+                >
+                  No Orders Yet
+                </td>
               </tr>
             )}
           </tbody>
         </table>
+        <div className="flex justify-between px-10 mt-10">
+          <button
+            onClick={handlePrevPage}
+            className="border border-#6856f4 w-24 h-10 rounded-full bg-[#6856f4] text-white"
+          >
+            Prev
+          </button>
+          <button
+            onClick={handleNextPage}
+            className="border border-#6856f4 w-24 h-10 rounded-full bg-[#6856f4] text-white"
+          >
+            Next
+          </button>
+        </div>
       </div>
     </>
   );
