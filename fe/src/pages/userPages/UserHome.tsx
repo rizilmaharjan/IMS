@@ -9,8 +9,6 @@ export const UserHome = () => {
   const navigate = useNavigate();
   return (
     <>
-
-
       <div className="grid grid-cols-2 min-h-screen pt-28">
         {/* hero section */}
         <div className="mx-auto">
@@ -43,9 +41,7 @@ export const UserHome = () => {
       {/* contact us */}
       <Contactus />
       {/* footer */}
-      <Footer />
-
-
+      {/* <Footer /> */}
     </>
   );
 };

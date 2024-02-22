@@ -35,23 +35,22 @@ export const UserProducts = () => {
             params,
           }
         );
-        setProductsData(res.data.data)
-        console.log("products response", res)
+        setProductsData(res.data.data);
+        console.log("products response", res);
       } catch (error) {
-        console.log(error)
-
+        console.log(error);
       }
     };
-    fetchProducts()
+    fetchProducts();
   }, [page]);
   return (
     <>
       {/* <UserNavbar /> */}
-      <div className="pb-8 px-3 mt-7">
+      <div className="pb-8 px-3 mt-7 flex flex-col min-h-screen">
         <h1 className="text-3xl ml-4 font-semibold px-8 capitalize">
           Our Products
         </h1>
-        <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-y-10 place-items-center">
+        <div className="mt-10 grid grow grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-y-10 place-items-center">
           {productsData ? (
             productsData?.map((item: IProducts) => (
               <ProductCard key={item._id} {...item} />
@@ -72,7 +71,7 @@ export const UserProducts = () => {
             <GoArrowLeft className="absolute top-3 left-3" />
           </button>
           <button
-            disabled={productsData.length<8}
+            disabled={productsData.length < 8}
             onClick={handleNextPage}
             className="border bg-black relative text-white border-black w-24 h-10 rounded-full py-2"
           >

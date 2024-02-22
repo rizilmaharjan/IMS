@@ -55,7 +55,6 @@ const App = () => {
     }
   }, [userRole]);
 
-
   return (
     <>
       <Routes>
