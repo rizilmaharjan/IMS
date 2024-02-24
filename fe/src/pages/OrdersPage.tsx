@@ -44,9 +44,12 @@ const OrdersPage = () => {
           status: e.currentTarget.value, //if button element wraps the image instead of text then to retireve the value use e.currentTarget.value instead of e.target.value
         }
       );
+
+      console.log("patch response", res);
       if (res.status === 200) {
-        const updatedOrders = orderInfo.map((item: Order) => {
+        const updatedOrders = userOrderInfo.map((item: Order) => {
           if (item._id === res?.data.data._id) {
+            console.log("i am inside if block");
             return {
               ...item,
               status: res?.data.data.status,
@@ -54,7 +57,8 @@ const OrdersPage = () => {
           }
           return item;
         });
-        setOrderInfo(updatedOrders);
+        console.log("my updated orders", updatedOrders);
+        setUserOrderInfo(updatedOrders);
       }
 
       if (res.status === 200 && res?.data.data.status === "approved") {
