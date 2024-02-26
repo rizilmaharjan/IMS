@@ -98,17 +98,20 @@ export const createOrder = async (order: IOrder) => {
   }
 };
 
-export const getOrders = async (
-  page: number,
-  limit: number,
-  pending?: string
-) => {
+export const getOrders = async (status?: string, userId?: string) => {
   try {
     let query: any = {}; // Initialize an empty query object
 
-    // If the 'pending' query parameter is 'true', filter by pending status
-    if (pending === "true") {
-      query.status = "pending";
+    // if (!status || (status !== "approved" && status !== "rejected")) {
+    //   status = "pending";
+    // }
+
+    if (status) {
+      query.status = status;
+    }
+
+    if (userId) {
+      query.orderedId = new ObjectId(userId);
     }
 
     // *fetch the total count of orders
@@ -123,19 +126,21 @@ export const getOrders = async (
 
         {
           $lookup: {
-            from: "users", // The name of the users collection
-            localField: "orderedId", // The field in the orders collection
-            foreignField: "_id", // The field in the users collection
+            from: "users",
+            localField: "orderedId",
+            foreignField: "_id",
             as: "user",
           },
         },
         {
-          $unwind: "$user", // Deconstruct the array field 'user'
+          $unwind: "$user",
         },
       ])
-      .skip((page - 1) * limit)
-      .limit(limit)
+      // .skip((page - 1) * limit)
+      // .limit(limit)
       .toArray();
+
+    console.log("my orders", findOrders);
 
     if (!findOrders) return { status: 404, message: "Orders not found" };
 

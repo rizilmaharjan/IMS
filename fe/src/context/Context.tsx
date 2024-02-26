@@ -14,15 +14,15 @@ interface ProductsContextProps {
 }
 
 const ProductsContext = ({ children }: ProductsContextProps) => {
-  // const { response: productResponse, fetchError: productFetchError } = useGet(
-  //   "http://localhost:8000/product/api/products"
-  // );
-  // const { response: userResponse, fetchError: userFetchError } = useGet(
-  //   "http://localhost:8000/user/api/users"
-  // );
-  // const { response: userOrder, fetchError: userOrderError } = useGet(
-  //   "http://localhost:8000/product/api/orders"
-  // );
+  const { response: productResponse, fetchError: productFetchError } = useGet(
+    "http://localhost:8000/product/api/products"
+  );
+  const { response: userResponse, fetchError: userFetchError } = useGet(
+    "http://localhost:8000/user/api/users"
+  );
+  const { response: userOrder, fetchError: userOrderError } = useGet(
+    "http://localhost:8000/product/api/orders"
+  );
 
   const [productData, setProductData] = useState<Product[]>();
   const [userData, setUserData] = useState<User[]>();
@@ -32,18 +32,18 @@ const ProductsContext = ({ children }: ProductsContextProps) => {
   const [status, setStatus] = useState("pending");
   const [totalOrders, setTotalOrders] = useState<number>();
 
-  // useEffect(() => {
-  //   setProductData(productResponse?.data);
-  // }, [productResponse]);
-  // useEffect(() => {
-  //   setUserData(userResponse?.data);
-  // }, [userResponse]);
-  // useEffect(() => {
-  //   setOrderInfo(userOrder?.data);
-  // }, [userOrder]);
-  // useEffect(() => {
-  //   setTotalOrders(userOrder?.totalOrders);
-  // }, [userOrder]);
+  useEffect(() => {
+    setProductData(productResponse?.data);
+  }, [productResponse]);
+  useEffect(() => {
+    setUserData(userResponse?.data);
+  }, [userResponse]);
+  useEffect(() => {
+    setOrderInfo(userOrder?.data);
+  }, [userOrder]);
+  useEffect(() => {
+    setTotalOrders(userOrder?.totalOrders);
+  }, [userOrder]);
 
   return (
     <productContext.Provider

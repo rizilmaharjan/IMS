@@ -23,7 +23,7 @@ const OrdersPage = () => {
     const fetchUserOrders = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:8000/product/api/orders?page=${currentPage}&pending=true`
+          `http://localhost:8000/product/api/orders?status=pending`
         );
         setUserOrderInfo(res?.data.data);
       } catch (error) {
@@ -33,6 +33,49 @@ const OrdersPage = () => {
     fetchUserOrders();
   }, [currentPage]);
 
+  // const handleOrder = async (
+  //   e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+  //   id: string
+  // ) => {
+  //   try {
+  //     const res = await axios.patch(
+  //       `http://localhost:8000/product/api/orders/${id}`,
+  //       {
+  //         status: e.currentTarget.value, //if button element wraps the image instead of text then to retireve the value use e.currentTarget.value instead of e.target.value
+  //       }
+  //     );
+
+  //     console.log("patch response", res);
+  //     if (res.status === 200) {
+  //       const updatedOrders = userOrderInfo.map((item: Order) => {
+  //         if (item._id === res?.data.data._id) {
+  //           console.log("i am inside if block");
+  //           return {
+  //             ...item,
+  //             status: res?.data.data.status,
+  //           };
+  //         }
+  //         return item;
+  //       });
+  //       console.log("my updated orders", updatedOrders);
+  //       setUserOrderInfo(updatedOrders);
+  //     }
+
+  //     if (res.status === 200 && res?.data.data.status === "approved") {
+  //       const updatedData = productData.map((item: Product) => {
+  //         if (item.name === res?.data.data.name) {
+  //           setStatus("approved");
+  //           return { ...item, stock: item.stock - res.data.data.noOfProducts };
+  //         }
+  //         return item;
+  //       });
+  //       setProductData(updatedData);
+  //     }
+  //   } catch (error) {
+  //     console.log("patch error", error);
+  //   }
+  // };
+
   const handleOrder = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
     id: string
@@ -41,35 +84,30 @@ const OrdersPage = () => {
       const res = await axios.patch(
         `http://localhost:8000/product/api/orders/${id}`,
         {
-          status: e.currentTarget.value, //if button element wraps the image instead of text then to retireve the value use e.currentTarget.value instead of e.target.value
+          status: e.currentTarget.value,
         }
       );
 
       console.log("patch response", res);
       if (res.status === 200) {
-        const updatedOrders = userOrderInfo.map((item: Order) => {
-          if (item._id === res?.data.data._id) {
-            console.log("i am inside if block");
-            return {
-              ...item,
-              status: res?.data.data.status,
-            };
-          }
-          return item;
-        });
-        console.log("my updated orders", updatedOrders);
-        setUserOrderInfo(updatedOrders);
-      }
+        // Remove the order from state directly
+        setUserOrderInfo((prevState) =>
+          prevState.filter((item) => item._id !== id)
+        );
 
-      if (res.status === 200 && res?.data.data.status === "approved") {
-        const updatedData = productData.map((item: Product) => {
-          if (item.name === res?.data.data.name) {
-            setStatus("approved");
-            return { ...item, stock: item.stock - res.data.data.noOfProducts };
-          }
-          return item;
-        });
-        setProductData(updatedData);
+        if (res.status === 200 && res?.data.data.status === "approved") {
+          const updatedData = productData.map((item: Product) => {
+            if (item.name === res?.data.data.name) {
+              setStatus("approved");
+              return {
+                ...item,
+                stock: item.stock - res.data.data.noOfProducts,
+              };
+            }
+            return item;
+          });
+          setProductData(updatedData);
+        }
       }
     } catch (error) {
       console.log("patch error", error);

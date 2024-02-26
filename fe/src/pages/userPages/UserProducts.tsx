@@ -53,7 +53,11 @@ export const UserProducts = () => {
         <div className="mt-10 grid grow grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-y-10 place-items-center">
           {productsData ? (
             productsData?.map((item: IProducts) => (
-              <ProductCard key={item._id} {...item} />
+              <ProductCard
+                key={item._id}
+                {...item}
+                allProductsData={productsData}
+              />
             ))
           ) : (
             <div className="mx-auto">

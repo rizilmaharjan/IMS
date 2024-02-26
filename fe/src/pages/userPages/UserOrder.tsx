@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useGet } from "../../hooks/get/useGet";
-import UserNavbar from "../../components/navbar/UserNavbar";
 import Loader from "../../components/loader/Loader";
 import { Order } from "../../context/context.types";
 import { FaTrashAlt } from "react-icons/fa";
@@ -11,16 +10,12 @@ export const UserOrder = () => {
   const loggedInUserId = localStorage.getItem("userId");
 
   const { response, fetchError } = useGet(
-    "http://localhost:8000/product/api/orders"
+    `http://localhost:8000/product/api/orders?userid=${loggedInUserId}`
   );
   useEffect(() => {
-    console.log("this is order response", response)
+    console.log("this is order response", response);
     if (response) {
-      // setOrderedData(response.data);
-      const filteredProduct = response.data.filter(
-        (item: Order) => item.orderedId === loggedInUserId
-      );
-      setOrderedData(filteredProduct);
+      setOrderedData(response.data);
     }
   }, [response, fetchError]);
 

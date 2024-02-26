@@ -1,24 +1,41 @@
 import { useState } from "react";
 import { useCustomContext } from "../../context/Context";
 import PlaceOrder from "../modal/PlaceOrder";
-interface IProductCard {
+type IProductCard = {
   name: string;
   amount: string;
   image: string;
   _id: string;
   stock?: number;
-}
-const ProductCard = ({ name, amount, image, _id }: IProductCard) => {
-  const { productData } = useCustomContext();
+};
+
+type ProductCardProps = IProductCard & {
+  allProductsData: IProductCard[];
+};
+const ProductCard = ({
+  name,
+  amount,
+  image,
+  _id,
+  allProductsData,
+}: ProductCardProps) => {
+  // const { productData } = useCustomContext();
   const [individualProduct, setIndividualProduct] =
     useState<null | IProductCard>(null);
   const [isProductModalOpen, setIsProductModalOpen] = useState<boolean>(false);
 
   const handleOrderModal = (id: string) => {
-    const individualProduct = productData?.find(
+    console.log("product id", id);
+    const individualProduct = allProductsData?.find(
       (item: IProductCard) => item._id === id
     );
-    setIndividualProduct(individualProduct);
+    if (individualProduct) {
+      setIndividualProduct(individualProduct);
+    }
+
+    console.log("i am clicked");
+
+    console.log("isproductmodalopen", isProductModalOpen);
   };
 
   return (

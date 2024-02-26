@@ -3,6 +3,7 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import { IUserRegistration } from "./UserLogin.types";
 import { ObjectId } from "mongodb";
+import { TUser } from "../user.type";
 const { MongoClient } = require("mongodb");
 const uri = process.env.MONGO_URI;
 const client = new MongoClient(uri);
@@ -44,9 +45,14 @@ export const create = async (user: IUser) => {
   }
 };
 
-export const User = async () => {
+export const User = async (user: TUser) => {
   try {
-    const getUsers = await userCollection.find().toArray();
+    console.log("logged in user", user);
+    const userIdObject = new ObjectId(user.userId);
+    const getUsers = await userCollection
+      .find({ _id: { $ne: userIdObject } })
+      .toArray();
+    console.log("fetched users", getUsers);
     if (!getUsers) return { status: 404, message: "User not found" };
     return {
       status: 200,

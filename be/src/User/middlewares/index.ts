@@ -13,7 +13,8 @@ export const verifyToken = (
     return next(error);
   }
   try {
-    jwt.verify(token, process.env.SECRET_KEY as string);
+    const decoded_token = jwt.verify(token, process.env.SECRET_KEY as string);
+    res.locals.user = decoded_token;
 
     next();
   } catch (error) {

@@ -1,21 +1,30 @@
-import { useState } from "react";
-import { useCustomContext } from "../context/Context";
+import { useEffect, useState } from "react";
 import { Order } from "../context/context.types";
+import axios from "axios";
 
 const OrderHistory = () => {
   const [filter, setFilter] = useState<string>("approved");
-  const { orderInfo } = useCustomContext();
-  console.log("product history", orderInfo);
+  const [filteredOrders, setFilteredData] = useState([]);
 
-  const filteredOrders = orderInfo?.filter((item: Order) =>
-    filter === "approved"
-      ? item.status === "approved"
-      : item.status === "rejected"
-  );
+  useEffect(() => {
+    const orderRes = async () => {
+      try {
+        const res = await axios.get(
+          `http://localhost:8000/product/api/orders?status=${filter}`
+        );
+        setFilteredData(res.data.data);
+        console.log("ordered response", res);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    orderRes();
+  }, [filter]);
 
   return (
     <>
-      <div className=" bg-white w-[97%] mx-auto h-full rounded-lg">
+      <div className=" bg-white w-[97%] mx-auto h-full rounded-lg overflow-y-auto pb-10">
         <div className="flex justify-around py-3">
           <button
             onClick={() => setFilter("approved")}
