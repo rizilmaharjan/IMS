@@ -9,7 +9,7 @@ export const UserOrder = () => {
   const [orderedData, setOrderedData] = useState<null | Order[]>(null);
   const loggedInUserId = localStorage.getItem("userId");
 
-  const { response, fetchError } = useGet(
+  const { response, fetchError, isLoading } = useGet(
     `http://localhost:8000/product/api/orders?userid=${loggedInUserId}`
   );
   useEffect(() => {
@@ -51,9 +51,10 @@ export const UserOrder = () => {
               <th className="text-xs md:text-lg">Action</th>
             </tr>
           </thead>
-          {orderedData && orderedData.length > 0 ? (
+          {/* {isLoading && <Loader />} */}
+          {orderedData && (
             <tbody>
-              {orderedData ? (
+              {orderedData.length > 0 ? (
                 orderedData.map((item, indx) => (
                   <tr key={item._id}>
                     <td className="w-fit mt-3 text-xs md:text-lg">
@@ -97,18 +98,16 @@ export const UserOrder = () => {
                   </tr>
                 ))
               ) : (
-                <Loader />
+                <tr>
+                  <td
+                    colSpan={5}
+                    className="text-center text-gray-500 text-3xl font-bold py-80"
+                  >
+                    No orders yet
+                  </td>
+                </tr>
               )}
             </tbody>
-          ) : (
-            <tr>
-              <td
-                className="py-80 text-center text-4xl text-gray-400 font-semibold"
-                colSpan={5}
-              >
-                No Orders Yet
-              </td>
-            </tr>
           )}
         </table>
       </div>
