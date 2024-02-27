@@ -96,7 +96,7 @@ const Widgets = ({
   }
   return (
     <>
-      <div className="flex justify-between px-4 gap-4 drop-shadow-lg bg-white w-1/4  py-3 rounded-md h-28">
+      <div className="flex justify-between px-4 gap-4 drop-shadow-lg bg-white w-[25%]  py-3 rounded-md h-28">
         <div className="flex flex-col justify-between">
           <span className="font-bold text-[14px] text-gray-400">
             {data.title}

@@ -14,8 +14,7 @@ import { useCustomContext } from "../../context/Context";
 
 const Sidebar = () => {
   const navigate = useNavigate();
-  const {toggleDarkMode} = useCustomContext()
-
+  const { toggleDarkMode } = useCustomContext();
 
   const handleLogout = () => {
     Cookies.remove("authToken");
@@ -23,7 +22,11 @@ const Sidebar = () => {
   };
   return (
     <>
-      <div className={`flex ${toggleDarkMode ? "bg-[#191919] text-white":""} flex-col items-center py-4 w-1/5 `}>
+      <div
+        className={`flex ${
+          toggleDarkMode ? "bg-[#191919] text-white" : ""
+        } flex-col items-center py-4 w-1/5 `}
+      >
         <div className="flex justify-center">
           <NavLink to="/dashboard">
             <span className="text-purple-600 font-semibold text-2xl">
@@ -46,67 +49,53 @@ const Sidebar = () => {
               )}
             </NavLink>
             <p className="text-xs font-bold text-[#999] mt-4 mb-1">LISTS</p>
-            <NavLink
-              to={"/users"}
-            >
-              {({isActive}) => (
-                <li className={`flex ${
+            <NavLink to={"/users"}>
+              {({ isActive }) => (
+                <li
+                  className={`flex ${
                     isActive && "bg-gradient-to-r from-blue-500 to-white"
-                  } gap-1 items-center p-2 cursor-pointer hover:bg-gradient-to-r from-blue-500 to-white`}>
-                <PersonOutlineOutlinedIcon className="icon" />{" "}
-                <span className="span">Users</span>
-              </li>
-
+                  } gap-1 items-center p-2 cursor-pointer hover:bg-gradient-to-r from-blue-500 to-white`}
+                >
+                  <PersonOutlineOutlinedIcon className="icon" />{" "}
+                  <span className="span">Users</span>
+                </li>
               )}
-              
             </NavLink>
-            <NavLink
-              to={"/products"}
-            >
-              {
-                ({isActive})=>(
-                  <li className={`flex ${
+            <NavLink to={"/products"}>
+              {({ isActive }) => (
+                <li
+                  className={`flex ${
                     isActive && "bg-gradient-to-r from-blue-500 to-white"
-                  } gap-1 items-center p-2 mt-2 cursor-pointer hover:bg-gradient-to-r from-blue-500 to-white`}>
-                <CategoryOutlinedIcon className="icon" />{" "}
-                <span className="span">Products</span>
-              </li>
-
-                )
-              }
-              
+                  } gap-1 items-center p-2 mt-2 cursor-pointer hover:bg-gradient-to-r from-blue-500 to-white`}
+                >
+                  <CategoryOutlinedIcon className="icon" />{" "}
+                  <span className="span">Products</span>
+                </li>
+              )}
             </NavLink>
-            <NavLink
-              to={"/orders"}
-            >
-              {
-                ({isActive})=>(
-                  <li className={`flex ${
+            <NavLink to={"/orders"}>
+              {({ isActive }) => (
+                <li
+                  className={`flex ${
                     isActive && "bg-gradient-to-r from-blue-500 to-white"
-                  } gap-1 items-center p-2 mt-2 cursor-pointer hover:bg-gradient-to-r from-blue-500 to-white`}>
-                <BorderColorOutlinedIcon className="icon" />{" "}
-                <span className="span">Orders</span>
-              </li>
-
-                )
-              }
-              
+                  } gap-1 items-center p-2 mt-2 cursor-pointer hover:bg-gradient-to-r from-blue-500 to-white`}
+                >
+                  <BorderColorOutlinedIcon className="icon" />{" "}
+                  <span className="span">Orders</span>
+                </li>
+              )}
             </NavLink>
-            <NavLink
-              to={"/history"}
-            >
-              {
-                ({isActive})=>(
-                  <li className={`flex ${
+            <NavLink to={"/history"}>
+              {({ isActive }) => (
+                <li
+                  className={`flex ${
                     isActive && "bg-gradient-to-r from-blue-500 to-white"
-                  } gap-1 items-center p-2 mt-2 cursor-pointer hover:bg-gradient-to-r from-blue-500 to-white`}>
-                <AiOutlineHistory size={24} className="icon" />{" "}
-                <span className="span">History</span>
-              </li>
-
-                )
-              }
-             
+                  } gap-1 items-center p-2 mt-2 cursor-pointer hover:bg-gradient-to-r from-blue-500 to-white`}
+                >
+                  <AiOutlineHistory size={24} className="icon" />{" "}
+                  <span className="span">History</span>
+                </li>
+              )}
             </NavLink>
             {/* <p className="text-xs font-bold text-[#999] mt-4 mb-1">USEFUL</p> */}
             {/* <NavLink
@@ -123,7 +112,7 @@ const Sidebar = () => {
 
                 )
               }
-              
+
             </NavLink> */}
 
             <p className="text-xs font-bold text-[#999] mt-4 mb-1">USER</p>
