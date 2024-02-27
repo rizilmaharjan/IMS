@@ -68,7 +68,7 @@ export const getOrders = async (req: Request, res: Response) => {
   // const pending = req.query.pending as string;
   const status = req.query.status as string;
   const userId = req.query.userid as string;
-  console.log("my status", status);
+  // console.log("my status", status);
   try {
     const response = await fetchOrders(status, userId);
     res.json({

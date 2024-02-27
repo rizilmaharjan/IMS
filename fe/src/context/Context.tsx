@@ -6,7 +6,7 @@ import {
   useEffect,
 } from "react";
 import { useGet } from "../hooks/get/useGet";
-import { Product, User, Order } from "./context.types";
+import { Product, User, Order, TLoggedInUser } from "./context.types";
 
 const productContext = createContext<any>(null);
 interface ProductsContextProps {
@@ -27,7 +27,7 @@ const ProductsContext = ({ children }: ProductsContextProps) => {
   const [productData, setProductData] = useState<Product[]>();
   const [userData, setUserData] = useState<User[]>();
   const [userRole, setUserRole] = useState(null);
-  const [loggedInUser, setLoggedInUser] = useState(null);
+  const [loggedInUser, setLoggedInUser] = useState<TLoggedInUser | null>(null);
   const [orderInfo, setOrderInfo] = useState<Order[] | null>(null);
   const [status, setStatus] = useState("pending");
   const [totalOrders, setTotalOrders] = useState<number>();

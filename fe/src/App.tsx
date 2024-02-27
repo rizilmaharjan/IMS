@@ -9,6 +9,7 @@ import { lazy, Suspense } from "react";
 import Loader from "./components/loader/Loader";
 import Private from "./layout/Private";
 import UserLayout from "./layout/UserLayout";
+import UserProfile from "./pages/userPages/UserProfile";
 // import Notification from "./pages/Notification";
 
 // admin
@@ -40,20 +41,20 @@ const UserOrder = lazy(() =>
 );
 
 const App = () => {
-  const { userRole, setLoggedInUser } = useCustomContext();
+  const { loggedInUser } = useCustomContext();
   const storedRole = localStorage.getItem("userRole");
-  const [role, setRole] = useState<string | null>(storedRole);
+  // const [role, setRole] = useState<string | null>(storedRole);
 
-  useEffect(() => {
-    setLoggedInUser(userRole?.data.data);
-    // console.log("logged in user", userRole?.data.data)
+  // useEffect(() => {
+  //   console.log("logged in user", loggedInUser);
+  //   if (loggedInUser) {
+  //     localStorage.setItem("userId", loggedInUser._id);
+  //     // localStorage.setItem("userRole", loggedInUser.userRoles?.name);
+  //     // setRole(loggedInUser.userRoles?.name);
+  //   }
 
-    if (userRole?.data.data.role) {
-      localStorage.setItem("userId", userRole?.data.data._id);
-      localStorage.setItem("userRole", userRole.data.data.role);
-      setRole(userRole.data.data.role);
-    }
-  }, [userRole]);
+  //   console.log("this is app component");
+  // }, [loggedInUser]);
 
   return (
     <>
@@ -62,7 +63,7 @@ const App = () => {
           <Route path="/" element={<Login />} />
           <Route path="/register" element={<Registration />} />
 
-          {role === "ADMIN" && (
+          {storedRole && storedRole === "ADMIN" && (
             <>
               <Route
                 path="/dashboard"
@@ -131,7 +132,7 @@ const App = () => {
             </>
           )}
 
-          {role === "MEMBER" && (
+          {storedRole && storedRole === "MEMBER" && (
             <>
               <Route element={<UserLayout />}>
                 <Route
@@ -155,6 +156,14 @@ const App = () => {
                   element={
                     <Suspense fallback={<Loader />}>
                       <UserOrder />
+                    </Suspense>
+                  }
+                />
+                <Route
+                  path="/profile"
+                  element={
+                    <Suspense fallback={<Loader />}>
+                      <UserProfile />
                     </Suspense>
                   }
                 />

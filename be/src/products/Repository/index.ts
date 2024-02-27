@@ -39,7 +39,7 @@ export const create = async (product: IProduct) => {
 };
 
 export const fetchProducts = async (page: number, limit: number) => {
-  console.log("page", page);
+  // console.log("page", page);
   try {
     const findProducts = await productCollection
       .find()
@@ -74,13 +74,16 @@ export const deleteProduct = async (product: string) => {
 };
 
 export const createOrder = async (order: IOrder) => {
+  console.log("ordered body", order);
   const { orderedId } = order;
+  console.log("orderedId", orderedId);
+  const userOrderedId = new ObjectId(orderedId);
   try {
     // if(findProduct) {
-    const findUserId = await userCollection.findOne({ username: orderedId });
+    // const findUserId = await userCollection.findOne({ _id: userOrderedId });
     const postProduct = await orderCollection.insertOne({
       ...order,
-      orderedId: findUserId._id,
+      orderedId: userOrderedId,
     });
     if (postProduct.acknowledged) {
       const insertedProduct = await orderCollection.findOne({
@@ -99,6 +102,8 @@ export const createOrder = async (order: IOrder) => {
 };
 
 export const getOrders = async (status?: string, userId?: string) => {
+  console.log("my userId", userId);
+
   try {
     let query: any = {}; // Initialize an empty query object
 

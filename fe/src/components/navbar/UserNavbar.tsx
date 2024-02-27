@@ -11,26 +11,17 @@ type props = {
 const UserNavbar = ({ setOpenSideBar, openSideBar }: props) => {
   const { loggedInUser } = useCustomContext();
   const navigate = useNavigate();
-  // const [openSideBar, setOpenSideBar] = useState<boolean>(false);
-  const storedLoggedInfo = localStorage.getItem("LoggedInUser");
-  const storedLoggedProfile = localStorage.getItem("LoggedInProfile");
-  const [loggedInfo, setLoggedInInfo] = useState<string | null>(
-    storedLoggedInfo || null
-  );
-  const [loggedInProfile, setLoggedInProfile] = useState<string | null>(
-    storedLoggedProfile || null
-  );
+  // const storedLoggedInfo = localStorage.getItem("LoggedInUser");
 
   const [shadow, setShadow] = useState(false);
-  useEffect(() => {
-    if (loggedInUser) {
-      localStorage.setItem("LoggedInUser", loggedInUser.name);
-      localStorage.setItem("LoggedInUserID", loggedInUser.username);
-      localStorage.setItem("LoggedInProfile", loggedInUser.profile);
-      setLoggedInInfo(loggedInUser.name);
-      setLoggedInProfile(loggedInUser.profile);
-    }
-  }, [loggedInUser]);
+
+  // toDO remove code if needed
+  // useEffect(() => {
+  //   if (loggedInUser) {
+  //     localStorage.setItem("LoggedInUser", loggedInUser.name);
+  //     localStorage.setItem("LoggedInUserID", loggedInUser.username);
+  //   }
+  // }, [loggedInUser]);
 
   useEffect(() => {
     const colorChange = () => {
@@ -46,28 +37,23 @@ const UserNavbar = ({ setOpenSideBar, openSideBar }: props) => {
     };
   }, []);
 
+  const navigateToProfile = () => {
+    navigate("/profile");
+  };
+
   return (
     <>
-      {/* {openSideBar && (
-        <SideBarModal
-
-          closeSideBar={(val) => setOpenSideBar(val)}
-          showSideBar = {openSideBar}
-        />
-      )} */}
       <nav
         className={`bg-white sticky top-0 ${
           shadow ? "shadow-md" : ""
         } transition-all duration-300 ease-in-out z-30`}
       >
-        <div className="flex justify-between items-center max-w-7xl mx-auto py-4 w-full mx-auto">
+        <div className="flex justify-between items-center max-w-7xl mx-auto py-4 w-full">
           <div className="flex items-center gap-10">
             <GiHamburgerMenu
-              onClick={
-                function(){
-                  setOpenSideBar(true)
-                }
-              }
+              onClick={function () {
+                setOpenSideBar(true);
+              }}
               size={30}
               className="cursor-pointer"
             />
@@ -79,15 +65,15 @@ const UserNavbar = ({ setOpenSideBar, openSideBar }: props) => {
             </h1>
           </div>
           <div className="flex items-center gap-5">
-            <h1 className="font-semibold text-lg">{loggedInfo}</h1>
-            {loggedInProfile && (
+            <h1 className="font-semibold text-lg">{loggedInUser?.username}</h1>
+            {loggedInUser && (
               <img
+                onClick={navigateToProfile}
                 className="w-14 h-14 object-cover rounded-full"
-                src={loggedInProfile}
+                src={loggedInUser.profile}
                 alt="profilepicture"
               />
             )}
-            {/* <div className="bg-red-600 w-14 h-14 rounded-full"></div> */}
           </div>
         </div>
       </nav>

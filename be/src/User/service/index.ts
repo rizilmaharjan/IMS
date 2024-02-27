@@ -1,7 +1,12 @@
 import { IUserRegistration } from "./../Repository/UserLogin.types";
 import { IUser } from "./../Repository/User.types";
 import jwt from "jsonwebtoken";
-import { User, removeUser } from "../Repository";
+import {
+  User,
+  editUserProfile,
+  fetchUserProfile,
+  removeUser,
+} from "../Repository";
 
 import {
   create,
@@ -9,7 +14,7 @@ import {
   getUserByEmail as getUserByEmailService,
   resetUserPassword,
 } from "../Repository";
-import { TUser } from "../user.type";
+import { TUser, TUserInfo } from "../user.type";
 interface IResetpassword {
   password: string;
   confirmpassword: string;
@@ -49,6 +54,25 @@ export const Login = async (user: IUserRegistration) => {
 export const getUser = async (user: TUser) => {
   try {
     const response = await User(user);
+    return response;
+  } catch (error) {
+    throw new Error("Failed to get users");
+  }
+};
+export const getUserProfile = async (user: TUser) => {
+  try {
+    const response = await fetchUserProfile(user);
+    return response;
+  } catch (error) {
+    throw new Error("Failed to get users");
+  }
+};
+export const updateUserProfile = async (
+  user: TUser,
+  updatedUserInfo: TUserInfo
+) => {
+  try {
+    const response = await editUserProfile(user, updatedUserInfo);
     return response;
   } catch (error) {
     throw new Error("Failed to get users");

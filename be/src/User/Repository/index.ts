@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import { IUserRegistration } from "./UserLogin.types";
 import { ObjectId } from "mongodb";
-import { TUser } from "../user.type";
+import { TUser, TUserInfo } from "../user.type";
 const { MongoClient } = require("mongodb");
 const uri = process.env.MONGO_URI;
 const client = new MongoClient(uri);
@@ -22,10 +22,6 @@ export const create = async (user: IUser) => {
   // console.log(user)
   const { email, role } = user;
   const capitalizeRole = role.toUpperCase();
-  console.log(
-    "🚀 ~ file: index.ts:25 ~ create ~ capitalizeRole:",
-    capitalizeRole
-  );
   try {
     const findUser = await userCollection.findOne({ email: email });
     if (findUser) {
@@ -35,6 +31,7 @@ export const create = async (user: IUser) => {
       const roleID = findRole._id;
 
       user.role = roleID;
+      user.profile = "https://i.stack.imgur.com/l60Hf.png";
       user.password = await bcrypt.hash(user.password, 12);
       user.confirmpassword = await bcrypt.hash(user.confirmpassword, 12);
       const postUser = await userCollection.insertOne(user);
@@ -64,24 +61,132 @@ export const User = async (user: TUser) => {
   }
 };
 
+export const fetchUserProfile = async (user: TUser) => {
+  try {
+    const { userId } = user;
+    const userObjectId = new ObjectId(userId);
+    const getUser = await userCollection
+      .aggregate([
+        {
+          $match: { _id: userObjectId }, // Match stage
+        },
+        {
+          $lookup: {
+            from: "roles",
+            localField: "role",
+            foreignField: "_id",
+            as: "userRoles",
+          }, // Lookup stage
+        },
+        {
+          $unwind: "$userRoles", // Unwind stage
+        },
+      ])
+      .toArray();
+    if (!getUser) return { status: 404, message: "User not found" };
+    const [{ password, confirmpassword, ...userData }] = getUser;
+    return {
+      status: 200,
+      message: "user fetched successfully",
+      data: userData,
+    };
+  } catch (error) {
+    return { status: 500, message: "Error occured" };
+  }
+};
+
+// export const editUserProfile = async (
+//   user: TUser,
+//   updatedUserInfo: TUserInfo
+// ) => {
+//   try {
+//     const { userId } = user;
+//     const userObjectId = new ObjectId(userId);
+//     const findUser = await userCollection.findOne({ _id: userObjectId });
+//     if (!findUser) return { status: 404, message: "User not found" };
+//     const updatedStatus = await userCollection.updateOne(
+//       {
+//         _id: findUser._id,
+//       },
+//       {
+//         $set: updatedUserInfo,
+//       }
+//     );
+//     return {
+//       status: 200,
+//       message: "user updated successfully",
+//       data: updatedStatus,
+//     };
+//   } catch (error) {
+//     return { status: 500, message: "Error occured" };
+//   }
+// };
+
+export const editUserProfile = async (
+  user: TUser,
+  updatedUserInfo: TUserInfo
+) => {
+  try {
+    const { userId } = user;
+    const userObjectId = new ObjectId(userId);
+    const findUser = await userCollection.findOne({ _id: userObjectId });
+    if (!findUser) return { status: 404, message: "User not found" };
+
+    const updatedUser = await userCollection.findOneAndUpdate(
+      { _id: findUser._id },
+      { $set: updatedUserInfo },
+      { returnOriginal: false } // Return the updated document
+    );
+
+    return {
+      status: 200,
+      message: "User updated successfully",
+      data: updatedUser.value, // Access the updated document from the result
+    };
+  } catch (error) {
+    return { status: 500, message: "Error occurred" };
+  }
+};
+
 export const login = async (user: IUserRegistration) => {
   try {
-    const loggedUser = await userCollection.findOne({ email: user.email });
-    if (loggedUser) {
-      if (loggedUser.password === user.password) {
+    const loggedUser = await userCollection
+      .aggregate([
+        {
+          $match: { email: user.email },
+        },
+        {
+          $lookup: {
+            from: "roles",
+            localField: "role",
+            foreignField: "_id",
+            as: "userRoles",
+          },
+        },
+        {
+          $unwind: "$userRoles",
+        },
+      ])
+      .toArray();
+    if (loggedUser.length > 0) {
+      const passwordMatch = await bcrypt.compare(
+        user.password,
+        loggedUser[0].password
+      );
+      if (passwordMatch) {
         return {
           status: 200,
           message: "User logged in successfully",
-          data: loggedUser,
+          data: loggedUser[0],
         };
       } else {
-        return { status: 401, message: "Invalid Cardentials" };
+        return { status: 401, message: "Invalid Credentials" };
       }
     } else {
-      return { status: 404, message: "Invalid Cardentials" };
+      return { status: 404, message: "Invalid Credentials" };
     }
   } catch (error) {
-    return { status: 500, message: "Error occured" };
+    return { status: 500, message: "Error occurred" };
   }
 };
 

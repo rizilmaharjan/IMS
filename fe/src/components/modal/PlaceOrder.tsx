@@ -35,7 +35,7 @@ const PlaceOrder = ({ productDetails, closeModal }: IPlaceOrder) => {
     setSelectedColor(color);
   };
 
-  const loggedUserID = localStorage.getItem("LoggedInUserID");
+  const loggedUserID = localStorage.getItem("userId");
   const productData = {
     name: productDetails.name,
     image: productDetails.image,
@@ -44,7 +44,7 @@ const PlaceOrder = ({ productDetails, closeModal }: IPlaceOrder) => {
     status: status,
     totalAmount: totalAmount,
     color: selectedColor,
-    category: productDetails.category
+    category: productDetails.category,
   };
   const handleSubmit = () => {
     if (productData.color === null) {
@@ -54,17 +54,14 @@ const PlaceOrder = ({ productDetails, closeModal }: IPlaceOrder) => {
     fetchData("http://localhost:8000/product/api/orders", productData);
   };
 
-
   useEffect(() => {
     const timeout = setTimeout(() => {
-      setIsColorSelected(true)
+      setIsColorSelected(true);
     }, 2000);
-    
-  
+
     return () => {
-      clearTimeout(timeout)
-      
-    }
+      clearTimeout(timeout);
+    };
   }, [isColorSelected]);
 
   useEffect(() => {
@@ -74,6 +71,7 @@ const PlaceOrder = ({ productDetails, closeModal }: IPlaceOrder) => {
   }, [productNumber, productDetails]);
 
   useEffect(() => {
+    console.log("ordered datas", datas);
     if (datas?.status === 200) {
       setProductNumber(1);
       // closeModal(false)
@@ -102,31 +100,33 @@ const PlaceOrder = ({ productDetails, closeModal }: IPlaceOrder) => {
                 Brand: <span className="uppercase">{productDetails.brand}</span>
               </div>
               <div className="mt-1">
-                Product Type: <span className="capitalize">{productDetails.category}</span>
+                Product Type:{" "}
+                <span className="capitalize">{productDetails.category}</span>
               </div>
               <div className="mt-6">
                 <div className="flex gap-14 uppercase font-bold">
                   color:
                   <div className="flex gap-4">
-                    {productDetails.colors && productDetails.colors.map((item, index) => (
-                      <div
-                        key={index}
-                        onClick={() => handleColorClick(item)}
-                        className={`${
-                          item === "white" || item === "black"
-                            ? `bg-${item} w-6 rounded-full border ${
-                                selectedColor === item
-                                  ? "ring-4 ring-blue-500"
-                                  : "border-gray-400"
-                              } h-6`
-                            : `bg-${item}-500 w-6 rounded-full border ${
-                                selectedColor === item
-                                  ? `ring-4 ring-blue-500 `
-                                  : "border-gray-400"
-                              } h-6`
-                        }`}
-                      />
-                    ))}
+                    {productDetails.colors &&
+                      productDetails.colors.map((item, index) => (
+                        <div
+                          key={index}
+                          onClick={() => handleColorClick(item)}
+                          className={`${
+                            item === "white" || item === "black"
+                              ? `bg-${item} w-6 rounded-full border ${
+                                  selectedColor === item
+                                    ? "ring-4 ring-blue-500"
+                                    : "border-gray-400"
+                                } h-6`
+                              : `bg-${item}-500 w-6 rounded-full border ${
+                                  selectedColor === item
+                                    ? `ring-4 ring-blue-500 `
+                                    : "border-gray-400"
+                                } h-6`
+                          }`}
+                        />
+                      ))}
                   </div>
                 </div>
                 <div className="flex mt-3 gap-5">
@@ -161,7 +161,6 @@ const PlaceOrder = ({ productDetails, closeModal }: IPlaceOrder) => {
                   </button>
                 </div>
               </div>
-                
             </div>
 
             <div className="hidden md:block md:w-80">
@@ -173,8 +172,8 @@ const PlaceOrder = ({ productDetails, closeModal }: IPlaceOrder) => {
             </div>
           </div>
           <div className="mt-14 text-lg text-red-500 font-bold text-center">
-                  {isColorSelected === false && <p>Please select a color</p>}
-                </div>
+            {isColorSelected === false && <p>Please select a color</p>}
+          </div>
         </div>
         <ToastContainer />
       </div>

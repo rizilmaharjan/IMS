@@ -6,11 +6,14 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Cookies from "js-cookie";
 import Modal from "../components/modal/Modal";
-
+import { useCustomContext } from "../context/Context";
 
 const Login = () => {
   // useAxios custom hook
   const { datas, fetchError, fetchData } = useAxios();
+
+  const { setLoggedInUser } = useCustomContext();
+
   const navigate = useNavigate();
   const [loginData, setLoginData] = useState({
     email: "",
@@ -18,7 +21,7 @@ const Login = () => {
   });
 
   // modal
-  const [openModal, setOpenModal] = useState<boolean>(false)
+  const [openModal, setOpenModal] = useState<boolean>(false);
 
   //handlechange function
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -39,13 +42,16 @@ const Login = () => {
         expires: 2,
         sameSite: "strict",
       });
-      // toast.success(datas.message)
-      // setData(null)
       setLoginData((prev) => ({
         ...prev,
         Email: "",
         Password: "",
       }));
+
+      localStorage.setItem("userRole", datas.data.userRoles.name);
+      localStorage.setItem("userId", datas.data._id);
+      // localStorage.setItem("userId", loggedInUser._id);
+
       navigate("/dashboard");
     }
 
@@ -55,20 +61,21 @@ const Login = () => {
     }
   }, [fetchError, datas]);
 
-  const handleForgetPsw = ()=>{
-    setOpenModal(true)
-
-  }
+  const handleForgetPsw = () => {
+    setOpenModal(true);
+  };
 
   return (
     <>
-      {
-        openModal && <Modal openmodal={(val)=>setOpenModal(val)} /> 
-      }
+      {openModal && <Modal openmodal={(val) => setOpenModal(val)} />}
       <div className="flex justify-center items-center h-screen">
         <div className="flex justify-around  shadow-2xl py-8 md:p-4 w-[80%] md:w-[54%] rounded-xl md:h-2/3">
           <div className="w-1/2 hidden md:block">
-            <img className="h-full w-full object-cover" src={loginPhoto} alt="login" />
+            <img
+              className="h-full w-full object-cover"
+              src={loginPhoto}
+              alt="login"
+            />
           </div>
           <div className="w-full md:w-4/12 md:mt-20">
             <div className="w-11/12 ml-5">
@@ -113,7 +120,12 @@ const Login = () => {
                   Sign up
                 </span>
               </p>
-              <p onClick={handleForgetPsw} className="text-blue-500 hover:underline cursor-pointer">Forget password?</p>
+              <p
+                onClick={handleForgetPsw}
+                className="text-blue-500 hover:underline cursor-pointer"
+              >
+                Forget password?
+              </p>
             </div>
           </div>
         </div>

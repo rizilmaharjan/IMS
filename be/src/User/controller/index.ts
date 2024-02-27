@@ -4,6 +4,8 @@ import {
   Login,
   ResetPassword,
   getUserByEmail,
+  getUserProfile,
+  updateUserProfile,
   userDelete,
 } from "../service";
 import nodemailer from "nodemailer";
@@ -13,13 +15,11 @@ import { getUser } from "../service";
 export const createUser = async (req: Request, res: Response) => {
   try {
     const response = await Create({ ...req.body });
-    res
-      .status(response.status)
-      .json({
-        message: response.message,
-        data: response.data,
-        status: response.status,
-      });
+    res.status(response.status).json({
+      message: response.message,
+      data: response.data,
+      status: response.status,
+    });
   } catch (error) {
     res.status(400).json(error);
   }
@@ -28,7 +28,6 @@ export const createUser = async (req: Request, res: Response) => {
 export const loginUser = async (req: Request, res: Response) => {
   try {
     const { token, status, message, data } = await Login({ ...req.body });
-    console.log(token);
     if (token) {
       res.status(200).json({ status, token, message, data });
     } else {
@@ -43,21 +42,41 @@ export const fetchUsers = async (req: Request, res: Response) => {
   try {
     const user = res.locals.user;
     const response = await getUser(user);
-    res
-      .status(response.status)
-      .json({
-        message: response.message,
-        data: response.data,
-        status: response.status,
-      });
+    res.status(response.status).json({
+      message: response.message,
+      data: response.data,
+      status: response.status,
+    });
   } catch (error) {
     res.status(400).json(error);
   }
 };
 
-export const getUserInfo = (req: Request, res: Response) => {
+export const getUserInfo = async (req: Request, res: Response) => {
+  const user = res.locals.user;
+
   try {
-    res.status(200).json({ message: "token verified", status: 200 });
+    const response = await getUserProfile(user);
+    res.status(response.status).json({
+      message: response.message,
+      data: response.data,
+      status: response.status,
+    });
+  } catch (error) {
+    res.status(400).json(error);
+  }
+};
+export const editUserInfo = async (req: Request, res: Response) => {
+  const user = res.locals.user;
+  const updatedUserInfo = req.body;
+
+  try {
+    const response = await updateUserProfile(user, updatedUserInfo);
+    res.status(response.status).json({
+      message: response.message,
+      data: response.data,
+      status: response.status,
+    });
   } catch (error) {
     res.status(400).json(error);
   }

@@ -3,3 +3,10 @@ export type TUser = {
   username: string;
   iat: number;
 };
+
+export type TUserInfo = {
+  profile?: string;
+  username?: string;
+  name?: string;
+  email?: string;
+};

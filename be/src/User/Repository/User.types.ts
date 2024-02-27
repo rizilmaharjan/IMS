@@ -10,6 +10,7 @@ export interface IUser {
   password: string;
   confirmpassword: string;
   role: string;
+  profile: string;
   // gender: IGender;
   // role: string;
 }
