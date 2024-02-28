@@ -13,7 +13,6 @@ export const UserOrder = () => {
     `http://localhost:8000/product/api/orders?userid=${loggedInUserId}`
   );
   useEffect(() => {
-    console.log("this is order response", response);
     if (response) {
       setOrderedData(response.data);
     }
@@ -88,12 +87,16 @@ export const UserOrder = () => {
                       {item.status}
                     </td>
                     <td>
-                      <div
-                        onClick={() => handleOrderDelete(item._id)}
-                        className="hover:bg-red-500 w-fit p-2 hover:text-white text-red-500 cursor-pointer text-xl transition-hover duration-300 ease-in-out rounded-full"
-                      >
-                        <FaTrashAlt />
-                      </div>
+                      {item.status === "pending" ? (
+                        <div
+                          onClick={() => handleOrderDelete(item._id)}
+                          className="hover:bg-red-500 w-fit p-2 hover:text-white text-red-500 cursor-pointer text-xl transition-hover duration-300 ease-in-out rounded-full"
+                        >
+                          <FaTrashAlt />
+                        </div>
+                      ) : (
+                        <span>_</span>
+                      )}
                     </td>
                   </tr>
                 ))
