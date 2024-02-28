@@ -27,16 +27,10 @@ export const UserProducts = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const params = new URLSearchParams();
-        params.set("page", page.toString());
         const res = await axios.get(
-          "http://localhost:8000/product/api/products",
-          {
-            params,
-          }
+          `http://localhost:8000/product/api/products?page=${page}&limit=8`
         );
         setProductsData(res.data.data);
-        console.log("products response", res);
       } catch (error) {
         console.log(error);
       }
