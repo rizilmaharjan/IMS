@@ -1,23 +1,15 @@
-import {
-  NotificationsNoneOutlinedIcon,
-} from "../../utils/ReactIcons";
 import { useCustomContext } from "../../context/Context";
 import { useEffect, useState } from "react";
 import AdminModal from "../modal/AdminModal";
 import { useNavigate } from "react-router-dom";
 import { User } from "../../context/context.types";
+import { useGet } from "../../hooks/get/useGet";
 const Navbar = () => {
-  const { userData } = useCustomContext();
-  const [adminInfo, setAdminInfo] = useState<User | null>(null);
   const [isToolTipVisible, setIsToolTipVisible] = useState<boolean>(false);
   const [adminModal, setAdminModal] = useState<boolean>(false);
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    const storedRole = localStorage.getItem("userRole");
-    const loggedInAdmin = userData?.find((item:User) => item.role === storedRole);
-    setAdminInfo(loggedInAdmin);
-  }, [userData]);
+  const { response, isLoading } = useGet(
+    "http://localhost:8000/user/api/profile"
+  );
 
   const handleMouseEnter = () => {
     setIsToolTipVisible(true);
@@ -34,23 +26,18 @@ const Navbar = () => {
     <>
       {adminModal && (
         <AdminModal
-          {...adminInfo}
+          {...response?.data}
           closeAdminModal={(value) => setAdminModal(value)}
         />
       )}
-      <div
-        className="flex gap-6 items-center justify-end py-3 pr-7 cursor-pointer"
-      >
-        {/* <div>
-          <NotificationsNoneOutlinedIcon onClick={()=>navigate("/notification")} />
-        </div> */}
+      <div className="flex gap-6 items-center justify-end py-3 pr-7 cursor-pointer">
         <div className="relative inline-block">
           <img
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
-            className="rounded-full w-12 h-12"
-            src={adminInfo?.profile}
-            alt={adminInfo?.username}
+            className="rounded-full object-cover w-12 h-12"
+            src={response?.data.profile}
+            alt={response?.data.username}
             onClick={handleAdminProfile}
           />
           {isToolTipVisible && (
