@@ -54,7 +54,7 @@ const SingleUser = () => {
                     </p>
                     <p>
                       <span className="text-gray-500 font-semibold">Role</span>:{" "}
-                      {singleUser?.role}
+                      {singleUser?.userRoles.name}
                     </p>
                   </div>
                 </div>

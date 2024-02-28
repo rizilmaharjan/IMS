@@ -43,13 +43,31 @@ export const create = async (user: IUser) => {
 };
 
 export const User = async (user: TUser) => {
+  // console.log("Userinfo", user);
   try {
-    console.log("logged in user", user);
+    // console.log("logged in user", user);
     const userIdObject = new ObjectId(user.userId);
     const getUsers = await userCollection
-      .find({ _id: { $ne: userIdObject } })
+      .aggregate([
+        {
+          $match: { _id: { $ne: userIdObject } },
+        },
+        {
+          $lookup: {
+            from: "roles",
+            localField: "role",
+            foreignField: "_id",
+            as: "userRoles",
+          }, // Lookup stage
+        },
+        {
+          $unwind: "$userRoles", // Unwind stage
+        },
+
+        // { _id: { $ne: userIdObject } }
+      ])
       .toArray();
-    console.log("fetched users", getUsers);
+    // console.log("fetched users", getUsers);
     if (!getUsers) return { status: 404, message: "User not found" };
     return {
       status: 200,
