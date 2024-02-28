@@ -119,11 +119,13 @@ const PlaceOrder = ({ productDetails, closeModal }: IPlaceOrder) => {
                                     ? "ring-4 ring-blue-500"
                                     : "border-gray-400"
                                 } h-6`
-                              : `bg-${item}-500 w-6 rounded-full border ${
+                              : item !== ""
+                              ? `bg-${item}-500 w-6 rounded-full border ${
                                   selectedColor === item
                                     ? `ring-4 ring-blue-500 `
                                     : "border-gray-400"
                                 } h-6`
+                              : ""
                           }`}
                         />
                       ))}
