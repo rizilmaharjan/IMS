@@ -47,6 +47,7 @@ export const fetchProducts = async (page: number, limit: number) => {
       .limit(limit)
       .toArray();
     if (!findProducts) return { status: 404, message: "Products not found" };
+    // console.log("all products", findProducts);
     return {
       status: 200,
       message: "products successfully fetched",
@@ -74,9 +75,9 @@ export const deleteProduct = async (product: string) => {
 };
 
 export const createOrder = async (order: IOrder) => {
-  console.log("ordered body", order);
+  // console.log("ordered body", order);
   const { orderedId } = order;
-  console.log("orderedId", orderedId);
+  // console.log("orderedId", orderedId);
   const userOrderedId = new ObjectId(orderedId);
   try {
     // if(findProduct) {
@@ -102,7 +103,7 @@ export const createOrder = async (order: IOrder) => {
 };
 
 export const getOrders = async (status?: string, userId?: string) => {
-  console.log("my userId", userId);
+  // console.log("my userId", userId);
 
   try {
     let query: any = {}; // Initialize an empty query object
@@ -145,7 +146,7 @@ export const getOrders = async (status?: string, userId?: string) => {
       // .limit(limit)
       .toArray();
 
-    console.log("my orders", findOrders);
+    // console.log("my orders", findOrders);
 
     if (!findOrders) return { status: 404, message: "Orders not found" };
 
