@@ -15,8 +15,6 @@ const OrdersPage = () => {
     setTotalOrders,
     setOrderInfo,
   } = useCustomContext();
-  const [items, setItems] = useState<Order[]>([]);
-  const [currentPage, setCurrentPage] = useState(1);
   const [userOrderInfo, setUserOrderInfo] = useState<Order[]>([]);
 
   useEffect(() => {
@@ -31,7 +29,7 @@ const OrdersPage = () => {
       }
     };
     fetchUserOrders();
-  }, [currentPage]);
+  }, []);
 
   // const handleOrder = async (
   //   e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
@@ -114,13 +112,6 @@ const OrdersPage = () => {
     }
   };
 
-  const handleNextPage = () => {
-    setCurrentPage((prev) => prev + 1);
-  };
-  const handlePrevPage = () => {
-    setCurrentPage((prev) => Math.max(prev - 1, 1));
-  };
-
   return (
     <>
       <div className="bg-white h-full w-[97%] mt-3 rounded-lg mx-auto">
@@ -177,20 +168,6 @@ const OrdersPage = () => {
             )}
           </tbody>
         </table>
-        <div className="flex justify-between px-10 mt-10">
-          <button
-            onClick={handlePrevPage}
-            className="border border-#6856f4 w-24 h-10 rounded-full bg-[#6856f4] text-white"
-          >
-            Prev
-          </button>
-          <button
-            onClick={handleNextPage}
-            className="border border-#6856f4 w-24 h-10 rounded-full bg-[#6856f4] text-white"
-          >
-            Next
-          </button>
-        </div>
       </div>
     </>
   );
