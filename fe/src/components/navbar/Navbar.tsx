@@ -1,15 +1,10 @@
-import { useCustomContext } from "../../context/Context";
-import { useEffect, useState } from "react";
 import AdminModal from "../modal/AdminModal";
-import { useNavigate } from "react-router-dom";
-import { User } from "../../context/context.types";
 import { useGet } from "../../hooks/get/useGet";
+import { useState } from "react";
 const Navbar = () => {
   const [isToolTipVisible, setIsToolTipVisible] = useState<boolean>(false);
   const [adminModal, setAdminModal] = useState<boolean>(false);
-  const { response, isLoading } = useGet(
-    "http://localhost:8000/user/api/profile"
-  );
+  const { response } = useGet("http://localhost:8000/user/api/profile");
 
   const handleMouseEnter = () => {
     setIsToolTipVisible(true);

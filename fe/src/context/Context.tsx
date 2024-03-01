@@ -24,6 +24,8 @@ const ProductsContext = ({ children }: ProductsContextProps) => {
     "http://localhost:8000/product/api/orders"
   );
 
+  console.log("my user response", userResponse);
+
   const [productData, setProductData] = useState<Product[]>();
   const [userData, setUserData] = useState<User[]>();
   const [userRole, setUserRole] = useState(null);
@@ -31,6 +33,8 @@ const ProductsContext = ({ children }: ProductsContextProps) => {
   const [orderInfo, setOrderInfo] = useState<Order[] | null>(null);
   const [status, setStatus] = useState("pending");
   const [totalOrders, setTotalOrders] = useState<number>();
+
+  console.log("all product datas", productData);
 
   useEffect(() => {
     setProductData(productResponse?.data);

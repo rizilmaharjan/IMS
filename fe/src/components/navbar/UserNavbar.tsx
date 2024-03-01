@@ -69,7 +69,7 @@ const UserNavbar = ({ setOpenSideBar, openSideBar }: props) => {
             {loggedInUser && (
               <img
                 onClick={navigateToProfile}
-                className="w-14 h-14 object-cover rounded-full"
+                className="w-14 h-14 object-cover rounded-full cursor-pointer"
                 src={loggedInUser.profile}
                 alt="profilepicture"
               />
