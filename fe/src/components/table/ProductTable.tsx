@@ -17,11 +17,11 @@ const ProductTable = () => {
   const { productData, setProductData } = useCustomContext();
   const [Modal, setModal] = useState<boolean>(false);
   const [products, setProducts] = useState<string>("");
-  const [editedItemValue, setEditedItemValue] = useState(null);
+  const [editedItemValue, setEditedItemValue] = useState<Product | null>(null);
   const [isEdit, setIsEdit] = useState(false);
   const [page, setPage] = useState(1);
   const navigate = useNavigate();
-  const [productsData, setProductsData] = useState([]);
+  const [productsData, setProductsData] = useState<Product[] | null>(null);
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -49,12 +49,14 @@ const ProductTable = () => {
 
   const handleUpdate = async (id: string) => {
     try {
-      const editedProduct = productData.find((item: Product) => {
+      const editedProduct = productsData?.find((item: Product) => {
         return item._id === id;
       });
-      setEditedItemValue(editedProduct);
-      setIsEdit(true);
-      setModal(true);
+      if (editedProduct) {
+        setEditedItemValue(editedProduct);
+        setIsEdit(true);
+        setModal(true);
+      }
     } catch (error) {
       console.log("error:", error);
     }
@@ -85,6 +87,7 @@ const ProductTable = () => {
           editedItemValue={editedItemValue}
           closeEditModal={(val) => setIsEdit(val)}
           closeModal={(val) => setModal(val)}
+          productsData={productsData}
         />
       )}
 
@@ -130,7 +133,7 @@ const ProductTable = () => {
                     </td>
                   </tr>
                 ) : (
-                  filterProducts.map((item: IProducts, indx: number) => (
+                  filterProducts?.map((item: Product, indx: number) => (
                     <tr className="border" key={item._id}>
                       <td className="text-left py-6 px-3">{indx + 1}</td>
                       <td className="text-left px-3 w-72">
@@ -158,7 +161,11 @@ const ProductTable = () => {
                             />
                           </button>
                           <button
-                            onClick={() => handleDelete(item._id)}
+                            onClick={() => {
+                              if (item) {
+                                handleDelete(item._id);
+                              }
+                            }}
                             className="w-10 ml-3 rounded-xl py-1"
                           >
                             <div className="hover:bg-red-600 text-red-600 flex justify-center items-center p-2 hover:transition-all hover:duration-300 hover:ease-in-out rounded-full h-10 hover:text-white">
