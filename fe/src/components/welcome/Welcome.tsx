@@ -16,8 +16,9 @@ const Welcome = () => {
     "http://localhost:8000/user/api/users"
   );
   const { response: productResponse } = useGet(
-    "http://localhost:8000/product/api/products"
+    "http://localhost:8000/product/api/products?all=true"
   );
+
   const { response: orderResponse } = useGet(
     "http://localhost:8000/product/api/orders"
   );
@@ -38,6 +39,7 @@ const Welcome = () => {
 
   useEffect(() => {
     setProductData(productResponse?.data);
+    console.log("all products", productResponse?.data);
   }, [productResponse]);
 
   useEffect(() => {

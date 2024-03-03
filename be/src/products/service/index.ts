@@ -20,9 +20,14 @@ export const Create = async (product: IProduct) => {
   }
 };
 
-export const Fetch = async (page: number, limit: number) => {
+export const Fetch = async (page?: number, limit?: number) => {
   try {
-    const response = await fetchProducts(page, limit);
+    let response;
+    if (page && limit) {
+      response = await fetchProducts(page, limit);
+    } else {
+      response = await fetchProducts();
+    }
     return response;
   } catch (error) {
     throw new Error("Failed to get products");

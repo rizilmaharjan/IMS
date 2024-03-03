@@ -26,8 +26,15 @@ export const createProduct = async (req: Request, res: Response) => {
 export const getProducts = async (req: Request, res: Response) => {
   const page = parseInt(req.query.page as string) || 1;
   const limit = parseInt(req.query.limit as string) || 8;
+
+  const fetchAll = req.query.all === "true";
   try {
-    const response = await Fetch(page, limit);
+    let response;
+    if (fetchAll) {
+      response = await Fetch();
+    } else {
+      response = await Fetch(page, limit);
+    }
     res.status(response.status).json({
       message: response.message,
       data: response.data,

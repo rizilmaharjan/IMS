@@ -14,7 +14,6 @@ import { useGet } from "../../hooks/get/useGet";
 import { GoArrowLeft, GoArrowRight } from "react-icons/go";
 
 const ProductTable = () => {
-  const { productData, setProductData } = useCustomContext();
   const [Modal, setModal] = useState<boolean>(false);
   const [products, setProducts] = useState<string>("");
   const [editedItemValue, setEditedItemValue] = useState<Product | null>(null);
@@ -124,7 +123,7 @@ const ProductTable = () => {
               </tr>
             </thead>
             <tbody>
-              {productData ? (
+              {productsData ? (
                 noProductsFound ? (
                   <tr>
                     <td colSpan={5} className="text-center pt-60">

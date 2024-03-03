@@ -38,14 +38,19 @@ export const create = async (product: IProduct) => {
   }
 };
 
-export const fetchProducts = async (page: number, limit: number) => {
+export const fetchProducts = async (page?: number, limit?: number) => {
   // console.log("page", page);
   try {
-    const findProducts = await productCollection
-      .find()
-      .skip((page - 1) * limit)
-      .limit(limit)
-      .toArray();
+    let findProducts;
+    if (page && limit) {
+      findProducts = await productCollection
+        .find()
+        .skip((page - 1) * limit)
+        .limit(limit)
+        .toArray();
+    } else {
+      findProducts = await productCollection.find().toArray();
+    }
     if (!findProducts) return { status: 404, message: "Products not found" };
     // console.log("all products", findProducts);
     return {
