@@ -40,10 +40,10 @@ const ProductTable = () => {
       `http://localhost:8000/product/api/products/${id}`
     );
     if (deleteProduct) {
-      const filteredProduct = productData.filter(
-        (item: IProducts) => item._id !== id
+      const filteredProduct = productsData?.filter(
+        (item: Product) => item._id !== id
       );
-      setProductData(filteredProduct);
+      setProductsData(filteredProduct || []);
     }
   };
 
