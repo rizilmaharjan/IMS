@@ -1,21 +1,25 @@
 import { useEffect, useState } from "react";
 import { useAxios } from "../../hooks/post/usePost";
-import { useCustomContext } from "../../context/Context";
+// import { useCustomContext } from "../../context/Context";
 import axios from "axios";
 import { Product } from "../../context/context.types";
 
 interface AddProductProps {
   closeModal: (val: boolean) => void;
-  isEdit: boolean,
-  editedItemValue:any,
-  closeEditModal:(value: React.SetStateAction<boolean>) => void
+  isEdit: boolean;
+  editedItemValue: any;
+  productsData: Product[] | null;
+  closeEditModal: (value: React.SetStateAction<boolean>) => void;
+  setProductsData: React.Dispatch<React.SetStateAction<Product[] | null>>;
 }
 
 const AddProduct: React.FC<AddProductProps> = ({
   closeModal,
   editedItemValue,
   closeEditModal,
-  isEdit
+  isEdit,
+  productsData,
+  setProductsData,
 }) => {
   const { fetchData, datas, fetchError } = useAxios();
   const [productInfo, setProductInfo] = useState({
@@ -28,7 +32,7 @@ const AddProduct: React.FC<AddProductProps> = ({
     colors: ["", "", ""],
   });
 
-  const { setProductData, productData } = useCustomContext();
+  // const { setProductData, productsData } = useCustomContext();
   const handleModalClick = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
   };
@@ -77,10 +81,10 @@ const AddProduct: React.FC<AddProductProps> = ({
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (productInfo.colors.length !== 3) {
-      alert("Please enter three colors.");
-      return;
-    }
+    // if (productInfo.colors.length !== 3) {
+    //   alert("Please enter three colors.");
+    //   return;
+    // }
 
     const addProducts = {
       ...productInfo,
@@ -89,6 +93,7 @@ const AddProduct: React.FC<AddProductProps> = ({
       fetchData("http://localhost:8000/product/api/products", addProducts);
     } else {
       // console.log("inside the else block");
+
       const updateProduct = async () => {
         try {
           const res = await axios.put(
@@ -97,7 +102,7 @@ const AddProduct: React.FC<AddProductProps> = ({
           );
           const data = res.data;
           // console.log("🚀 ~ file: AddProduct.tsx:95 ~ updateProduct ~ data:", data)
-          
+
           if (data.status === 200) {
             setProductInfo((prev) => ({
               ...prev,
@@ -110,19 +115,19 @@ const AddProduct: React.FC<AddProductProps> = ({
               colors: ["", "", ""],
             }));
 
-            const updateProduct = productData.map((item:Product)=>{
-              if(item._id === data.data._id){
-                return data.data
+            const updateProduct = productsData?.map((item: Product) => {
+              if (item._id === data.data._id) {
+                return data.data;
               }
-              return item
-            })
+              return item;
+            });
 
-            setProductData(updateProduct)
-            closeEditModal(false)
-
-           
+            if (updateProduct) {
+              setProductsData(updateProduct);
+            }
+            closeEditModal(false);
           }
-          closeModal(false)
+          closeModal(false);
         } catch (error) {
           console.log(error);
         }
@@ -144,7 +149,7 @@ const AddProduct: React.FC<AddProductProps> = ({
         category: "",
         colors: ["", "", ""],
       }));
-      setProductData([...productData, datas.data]);
+      setProductsData([...(productsData || []), datas.data]);
     }
   }, [datas]);
 
@@ -153,7 +158,7 @@ const AddProduct: React.FC<AddProductProps> = ({
       <div
         onClick={() => {
           closeModal(false);
-          closeEditModal(false)
+          closeEditModal(false);
         }}
         className="fixed cursor-pointer z-50 top-0 left-0 h-screen w-full modal-background flex items-center justify-center"
       >

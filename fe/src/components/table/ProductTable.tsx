@@ -88,6 +88,7 @@ const ProductTable = () => {
           closeEditModal={(val) => setIsEdit(val)}
           closeModal={(val) => setModal(val)}
           productsData={productsData}
+          setProductsData={setProductsData}
         />
       )}
 
@@ -162,7 +163,7 @@ const ProductTable = () => {
                           </button>
                           <button
                             onClick={() => {
-                              if (item) {
+                              if (item._id) {
                                 handleDelete(item._id);
                               }
                             }}
@@ -174,7 +175,11 @@ const ProductTable = () => {
                           </button>
                           <button
                             className="ml-3 w-10"
-                            onClick={() => handleUpdate(item._id)}
+                            onClick={() => {
+                              if (item._id) {
+                                handleUpdate(item._id);
+                              }
+                            }}
                           >
                             <BsPencilSquare size={20} color="green" />
                           </button>
@@ -198,7 +203,7 @@ const ProductTable = () => {
               <GoArrowLeft className="absolute top-3 left-3" />
             </button>
             <button
-              disabled={productsData.length < 8}
+              disabled={productsData !== null && productsData.length < 8}
               onClick={handleNextPage}
               className="border bg-[#6856f4] relative text-white border-[#6856f4] w-24 h-10 rounded-full py-2"
             >
