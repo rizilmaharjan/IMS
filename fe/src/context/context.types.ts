@@ -21,16 +21,30 @@ export type User = {
 };
 
 export type Order = {
-  _id: string;
-  category: string;
-  color: string;
-  image: string;
-  name: string;
   noOfProducts: number;
-  orderedId: string;
+  product: {
+    amount: string;
+    brand: string;
+    category: string;
+    colors: string[];
+    image: string;
+    name: string;
+    stock: number;
+    _id: string;
+  };
   status: string;
   totalAmount: number;
-  user: User;
+  user: {
+    confirmpassword: string;
+    email: string;
+    name: string;
+    password: string;
+    profile: string;
+    role: string;
+    username: string;
+    _id: string;
+  };
+  _id: string;
 };
 
 export type TUserRole = {

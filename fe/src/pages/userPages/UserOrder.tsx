@@ -16,6 +16,7 @@ export const UserOrder = () => {
     if (response) {
       setOrderedData(response.data);
     }
+    console.log("user order", response?.data);
   }, [response, fetchError]);
 
   const handleOrderDelete = async (id: string) => {
@@ -64,11 +65,11 @@ export const UserOrder = () => {
                         <img
                           className="hidden md:block"
                           width={"50px"}
-                          src={item.image}
-                          alt={item.name}
+                          src={item.product.image}
+                          alt={item.product.name}
                         />
                         <span className="capitalize text-xs md:text-lg">
-                          {item.name}
+                          {item.product.name}
                         </span>
                       </div>
                     </td>
