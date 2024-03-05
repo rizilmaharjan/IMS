@@ -4,7 +4,7 @@ import axios from "axios";
 
 const OrderHistory = () => {
   const [filter, setFilter] = useState<string>("approved");
-  const [filteredOrders, setFilteredData] = useState([]);
+  const [filteredDatas, setFilteredData] = useState([]);
 
   useEffect(() => {
     const orderRes = async () => {
@@ -13,7 +13,6 @@ const OrderHistory = () => {
           `http://localhost:8000/product/api/orders?status=${filter}`
         );
         setFilteredData(res.data.data);
-        console.log("ordered response", res);
       } catch (error) {
         console.log(error);
       }
@@ -51,14 +50,25 @@ const OrderHistory = () => {
             <th>Quantity</th>
           </thead>
           <tbody>
-            {filteredOrders?.map((item: Order, indx: number) => (
-              <tr className="even:bg-blue-100 border" key={item._id}>
-                <td className="pl-3 py-6 font-bold">{indx + 1}</td>
-                <td className="w-1/3 capitalize">{item.name}</td>
-                <td className="uppercase">{item.user.name}</td>
-                <td>{item.noOfProducts}</td>
+            {filteredDatas && filteredDatas.length > 0 ? (
+              filteredDatas?.map((item: Order, indx: number) => (
+                <tr className="even:bg-blue-100 border" key={item._id}>
+                  <td className="pl-3 py-6 font-bold">{indx + 1}</td>
+                  <td className="w-1/3 capitalize">{item.name}</td>
+                  <td className="uppercase">{item.user.name}</td>
+                  <td>{item.noOfProducts}</td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td
+                  className="py-80 text-center text-4xl text-gray-400 font-semibold"
+                  colSpan={5}
+                >
+                  No Orders Yet
+                </td>
               </tr>
-            ))}
+            )}
           </tbody>
         </table>
       </div>
