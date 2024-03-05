@@ -28,7 +28,6 @@ const SingleUser = () => {
   // }, [singleUser, orderInfo]);
 
   useEffect(() => {
-    console.log("specific user info", response?.data);
     setSingleUserTransaction(response?.data);
   }, [response]);
 
@@ -131,10 +130,7 @@ const SingleUser = () => {
                         >
                           {item?.status}
                         </td>
-                        <td className="capitalize text-center">
-                          {item?.color}
-                          //TODo :need to fetch color selected by user
-                        </td>
+                        <td className="capitalize text-center">{item.color}</td>
                         <td className="text-center">{item?.noOfProducts}</td>
                         <td className="text-center">${item?.totalAmount}</td>
                       </tr>

@@ -82,7 +82,8 @@ export const deleteProduct = async (product: string) => {
 
 export const createOrder = async (order: IOrder) => {
   // console.log("ordered body", order);
-  const { orderedId, _id, totalAmount, noOfProducts, status } = order;
+  const { orderedId, _id, totalAmount, noOfProducts, status, color } = order;
+  console.log("selected color", color);
   // console.log("ordered product id", _id);
   console.log("my orders", order);
   // console.log("orderedId", orderedId);
@@ -97,6 +98,7 @@ export const createOrder = async (order: IOrder) => {
       totalAmount,
       noOfProducts,
       status,
+      color,
     });
     if (postProduct.acknowledged) {
       const insertedProduct = await orderCollection.findOne({

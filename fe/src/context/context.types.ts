@@ -18,6 +18,10 @@ export type User = {
   profile: string;
   role: string;
   username: string;
+  userRoles: {
+    _id: string;
+    name: string;
+  };
 };
 
 export type Order = {
@@ -34,6 +38,7 @@ export type Order = {
   };
   status: string;
   totalAmount: number;
+  color: string;
   user: {
     confirmpassword: string;
     email: string;
