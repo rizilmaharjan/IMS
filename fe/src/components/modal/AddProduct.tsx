@@ -197,6 +197,7 @@ const AddProduct: React.FC<AddProductProps> = ({
                       value={productInfo.category}
                     >
                       {/* <option value=""></option> */}
+                      <option value="">Select Category</option>
                       <option value="accessories">Accessories</option>
                       <option value="laptops">Laptops</option>
                       <option value="console">Console</option>

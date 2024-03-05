@@ -5,12 +5,16 @@ import Navbar from "../components/navbar/Navbar";
 import Sidebar from "../components/sidebar/Sidebar";
 import PieChart from "../components/chart/PieChart";
 import { Order, User } from "../context/context.types";
+import { useGet } from "../hooks/get/useGet";
 const SingleUser = () => {
   const { id } = useParams();
-  const { userData, orderInfo } = useCustomContext();
+  const { userData } = useCustomContext();
   const [singleUser, setSingleUser] = useState<User | null>(null);
   const [singleUserTransaction, setSingleUserTransaction] = useState<Order[]>(
     []
+  );
+  const { response, isLoading, fetchError } = useGet(
+    `http://localhost:8000/product/api/orders?userid=${id}`
   );
 
   useEffect(() => {
@@ -18,10 +22,19 @@ const SingleUser = () => {
     setSingleUser(user);
   }, [userData]);
 
+  // useEffect(() => {
+  //   const userOrder = orderInfo?.filter((item: Order) => item.orderedId === id);
+  //   setSingleUserTransaction(userOrder);
+  // }, [singleUser, orderInfo]);
+
   useEffect(() => {
-    const userOrder = orderInfo?.filter((item: Order) => item.orderedId === id);
-    setSingleUserTransaction(userOrder);
-  }, [singleUser, orderInfo]);
+    console.log("specific user info", response?.data);
+    setSingleUserTransaction(response?.data);
+  }, [response]);
+
+  const productData = singleUserTransaction?.map(
+    (order: Order) => order.product
+  );
 
   return (
     <>
@@ -69,7 +82,7 @@ const SingleUser = () => {
                   width={400}
                   height={200}
                   radius={80}
-                  datas={singleUserTransaction || []}
+                  datas={productData || []}
                 />
               </div>
             </div>
@@ -101,10 +114,10 @@ const SingleUser = () => {
                         <td className="h-20 capitalize flex items-center gap-1 justify-center">
                           <img
                             className="w-14"
-                            src={item?.image}
+                            src={item?.product.image}
                             alt={item?._id}
                           />
-                          {item?.name}{" "}
+                          {item?.product.name}
                         </td>
                         {/* <td className="capitalize text-center">
                           {item?.orderedId}
@@ -120,12 +133,12 @@ const SingleUser = () => {
                         </td>
                         <td className="capitalize text-center">
                           {item?.color}
+                          //TODo :need to fetch color selected by user
                         </td>
                         <td className="text-center">{item?.noOfProducts}</td>
                         <td className="text-center">${item?.totalAmount}</td>
                       </tr>
                     ))}
-                    <tr></tr>
                   </tbody>
                 </table>
               </div>

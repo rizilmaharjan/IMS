@@ -115,6 +115,7 @@ export const deleteOrders = async (req: Request, res: Response) => {
 
 export const updateProduct = async (req: Request, res: Response) => {
   try {
+    console.log("update product body check", req.body);
     const { id } = req.params;
     const response = await updateProductData(id, { ...req.body });
     res.json({
