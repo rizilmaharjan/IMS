@@ -28,22 +28,18 @@ const AdminModal = ({
       >
         <div
           onClick={handleModalClose}
-          className="w-[400px] h-[450px] flex flex-col items-center px-6 py-4 bg-white rounded-lg"
+          className="w-[400px] h-[450px] flex flex-col items-center px-6 py-8 bg-white rounded-lg"
         >
           <img
             className="rounded-full w-48 h-48 object-cover"
             src={profile}
             alt={name}
           />
-          <h1 className="text-xl font-semibold uppercase mt-3">{name}</h1>
+          <h1 className="text-xl font-semibold uppercase mt-12">{name}</h1>
           <p className="text-sm text-gray-400 font-semibold lowercase mt-1">
             {userRoles?.name}
           </p>
           <p className="text-gray-600 font-semibold mt-1">{email}</p>
-          <p className="text-center mt-1">
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Vitae,
-            dolorum. Lorem ipsum dolor sit amet.{" "}
-          </p>
         </div>
       </div>
     </>
