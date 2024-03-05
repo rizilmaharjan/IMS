@@ -54,7 +54,7 @@ const OrderHistory = () => {
               filteredDatas?.map((item: Order, indx: number) => (
                 <tr className="even:bg-blue-100 border" key={item._id}>
                   <td className="pl-3 py-6 font-bold">{indx + 1}</td>
-                  <td className="w-1/3 capitalize">{item.name}</td>
+                  <td className="w-1/3 capitalize">{item.product.name}</td>
                   <td className="uppercase">{item.user.name}</td>
                   <td>{item.noOfProducts}</td>
                 </tr>

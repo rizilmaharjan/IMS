@@ -134,7 +134,7 @@ const OrdersPage = () => {
                 >
                   <>
                     <td className="pl-4 py-8">{indx + 1}</td>
-                    <td className="capitalize">{item.name}</td>
+                    <td className="capitalize">{item.product.name}</td>
                     <td className="uppercase">{item?.user.username}</td>
                     <td>{item.noOfProducts}</td>
                     <td className="flex items-center justify-center gap-6 py-6">
