@@ -17,6 +17,7 @@ const ProductCard = ({
   amount,
   image,
   _id,
+  stock,
   allProductsData,
 }: ProductCardProps) => {
   // const { productData } = useCustomContext();
@@ -59,15 +60,21 @@ const ProductCard = ({
           </div>
         </div>
         <div className="absolute bottom-0 w-full">
-          <button
-            onClick={() => {
-              handleOrderModal(_id);
-              setIsProductModalOpen(true);
-            }}
-            className="w-full py-3 bg-[#101010] uppercase text-lg text-white font-semibold hover:transition-all hover:duration-300 hover:ease-in-out "
-          >
-            Place Order
-          </button>
+          {stock && stock > 0 ? (
+            <button
+              onClick={() => {
+                handleOrderModal(_id);
+                setIsProductModalOpen(true);
+              }}
+              className="w-full py-3 bg-[#101010] uppercase text-lg text-white font-semibold hover:transition-all hover:duration-300 hover:ease-in-out "
+            >
+              Place Order
+            </button>
+          ) : (
+            <p className="bg-red-600 px-4 text-white text-center text-lg font-semibold py-3">
+              Out of Stock
+            </p>
+          )}
         </div>
       </div>
     </>

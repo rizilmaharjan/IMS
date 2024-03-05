@@ -13,7 +13,7 @@ interface IPostData {
 interface IProductData {
   name: string;
   amount: string;
-  stock: string;
+  stock: number;
   image: string;
 }
 

@@ -10,6 +10,7 @@ const db = client.db("userRegistrationandLogin");
 const productCollection = db.collection("products");
 const orderCollection = db.collection("orders");
 const userCollection = db.collection("users");
+
 export const create = async (product: IProduct) => {
   const { name } = product;
   try {
@@ -81,15 +82,21 @@ export const deleteProduct = async (product: string) => {
 
 export const createOrder = async (order: IOrder) => {
   // console.log("ordered body", order);
-  const { orderedId } = order;
+  const { orderedId, _id, totalAmount, noOfProducts, status } = order;
+  // console.log("ordered product id", _id);
+  console.log("my orders", order);
   // console.log("orderedId", orderedId);
   const userOrderedId = new ObjectId(orderedId);
+  const orderedProductId = new ObjectId(_id);
   try {
     // if(findProduct) {
     // const findUserId = await userCollection.findOne({ _id: userOrderedId });
     const postProduct = await orderCollection.insertOne({
-      ...order,
+      productOrdered: orderedProductId,
       orderedId: userOrderedId,
+      totalAmount,
+      noOfProducts,
+      status,
     });
     if (postProduct.acknowledged) {
       const insertedProduct = await orderCollection.findOne({
@@ -146,6 +153,24 @@ export const getOrders = async (status?: string, userId?: string) => {
         {
           $unwind: "$user",
         },
+
+        {
+          $lookup: {
+            from: "products",
+            localField: "productOrdered",
+            foreignField: "_id",
+            as: "product",
+          },
+        },
+        {
+          $unwind: "$product",
+        },
+        {
+          $project: {
+            productOrdered: 0, // Exclude productOrdered field
+            orderedId: 0, // Exclude orderedId field
+          },
+        },
       ])
       // .skip((page - 1) * limit)
       // .limit(limit)
@@ -167,46 +192,86 @@ export const getOrders = async (status?: string, userId?: string) => {
 };
 
 export const updateOrders = async (id: string, status: IStatus) => {
+  // console.log("productid", id);
   try {
     const findOrder = await orderCollection.findOne({ _id: new ObjectId(id) });
+    if (!findOrder) return { status: 404, message: "Order not found" };
 
-    if (findOrder) {
-      const updatedStatus = await orderCollection.updateOne(
-        {
-          _id: findOrder._id,
-        },
-        {
-          $set: { status: status.status },
-        }
-      );
-
-      const updatedOrder = await orderCollection.findOne({
+    console.log("order details", findOrder);
+    await orderCollection.updateOne(
+      {
         _id: findOrder._id,
-      });
-      if (updatedOrder.status === "approved") {
-        const removeProduct = await productCollection.findOne({
-          name: updatedOrder.name,
-        });
+      },
+      {
+        $set: { status: status.status },
+      }
+    );
 
-        if (removeProduct) {
-          // Correctly update the stock field by subtracting noOfProducts
-          await productCollection.updateOne(
-            {
-              _id: removeProduct._id,
-            },
-            {
-              $set: { stock: removeProduct.stock - updatedOrder.noOfProducts },
-            }
-          );
-        }
+    if (status.status === "approved") {
+      const findProduct = await productCollection.findOne({
+        _id: findOrder.productOrdered,
+      });
+      if (!findProduct) {
+        return { status: 404, message: "Product not found" };
       }
 
-      return {
-        status: 200,
-        message: "Status changed successfully",
-        data: updatedOrder,
-      };
+      await productCollection.updateOne(
+        {
+          _id: findOrder.productOrdered,
+        },
+        {
+          $inc: { stock: -findOrder.noOfProducts },
+        }
+      );
     }
+
+    const updatedOrder = await orderCollection.findOne({ _id: findOrder._id });
+    return {
+      status: 200,
+      message: "Order updated successfully",
+      data: updatedOrder,
+    };
+
+    // if (findOrder) {
+    //   const updatedStatus =
+
+    //   const findProduct = await productCollection.findOne({
+    //     _id: findOrder.productOrdered,
+    //   });
+
+    //   const updateStock = await productCollection.updateOne(
+    //     {_id:findOrder.productOrdered},
+    //    { $set: {stock: findProduct.stock - findOrder.noOfProducts}}
+    //   )
+    //   console.log("ordered products detail", findProduct);
+
+    //   const updatedOrder = await orderCollection.findOne({
+    //     _id: findOrder._id,
+    //   });
+    //   if (updatedOrder.status === "approved") {
+    //     const removeProduct = await productCollection.findOne({
+    //       name: updatedOrder.name,
+    //     });
+
+    //     if (removeProduct) {
+    //       // Correctly update the stock field by subtracting noOfProducts
+    //       await productCollection.updateOne(
+    //         {
+    //           _id: removeProduct._id,
+    //         },
+    //         {
+    //           $set: { stock: removeProduct.stock - updatedOrder.noOfProducts },
+    //         }
+    //       );
+    //     }
+    //   }
+
+    //   return {
+    //     status: 200,
+    //     message: "Status changed successfully",
+    //     data: updatedOrder,
+    //   };
+    // }
   } catch (error) {
     return { status: 500, message: "Error occurred" };
   }

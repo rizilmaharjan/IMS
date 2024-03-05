@@ -31,6 +31,7 @@ export const UserProducts = () => {
           `http://localhost:8000/product/api/products?page=${page}&limit=8`
         );
         setProductsData(res.data.data);
+        console.log("user side products", res.data.data);
       } catch (error) {
         console.log(error);
       }

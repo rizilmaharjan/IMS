@@ -25,7 +25,7 @@ const AddProduct: React.FC<AddProductProps> = ({
   const [productInfo, setProductInfo] = useState({
     name: "",
     amount: "",
-    stock: "",
+    stock: 0,
     image: "",
     brand: "",
     category: "",
@@ -88,6 +88,7 @@ const AddProduct: React.FC<AddProductProps> = ({
 
     const addProducts = {
       ...productInfo,
+      stock: Number(productInfo.stock),
     };
     if (!isEdit) {
       fetchData("http://localhost:8000/product/api/products", addProducts);
@@ -108,7 +109,7 @@ const AddProduct: React.FC<AddProductProps> = ({
               ...prev,
               name: "",
               amount: "",
-              stock: "",
+              stock: 0,
               image: "",
               brand: "",
               category: "",
@@ -143,7 +144,7 @@ const AddProduct: React.FC<AddProductProps> = ({
         ...prev,
         name: "",
         amount: "",
-        stock: "",
+        stock: 0,
         image: "",
         brand: "",
         category: "",
@@ -278,7 +279,7 @@ const AddProduct: React.FC<AddProductProps> = ({
                     productInfo.name === "" ||
                     productInfo.amount === "" ||
                     productInfo.image === "" ||
-                    productInfo.stock === ""
+                    productInfo.stock === 0
                   }
                   className="w-20 bg-[#6856f4] text-white cursor-pointer font-semibold py-2 rounded-lg"
                 >

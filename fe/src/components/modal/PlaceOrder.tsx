@@ -45,6 +45,7 @@ const PlaceOrder = ({ productDetails, closeModal }: IPlaceOrder) => {
     totalAmount: totalAmount,
     color: selectedColor,
     category: productDetails.category,
+    _id: productDetails._id,
   };
   const handleSubmit = () => {
     if (productData.color === null) {
