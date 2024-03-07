@@ -26,7 +26,6 @@ const UploadWidget = ({ setProfileImage }: TProps) => {
         },
         function (error: any, result: any) {
           if (result && result.event === "success") {
-            console.log("secure url", result.info.secure_url);
             setProfileImage(result.info.secure_url);
             // profileImage(result.info.secure_url)
             // dispatch(setProfilePicture(result.info.secure_url))
@@ -40,7 +39,7 @@ const UploadWidget = ({ setProfileImage }: TProps) => {
     <button
       type="button"
       // className="border bg-black text-white"
-      className="absolute top-4 left-4 text-xl"
+      // className="absolute top-4 left-4 text-xl"
       onClick={() => widgetRef.current && (widgetRef.current as any).open()}
     >
       <FaCamera />

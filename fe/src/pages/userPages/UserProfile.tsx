@@ -129,9 +129,9 @@ export default function UserProfile() {
                 src={response?.data.profile}
                 alt="person"
               />
-              <label>
+              <div className="top-4 left-4 text-xl">
                 <UploadWidget setProfileImage={setProfileImage} />
-              </label>
+              </div>
             </div>
             {/* user details */}
             <form onSubmit={handleSubmit} className="w-1/2">

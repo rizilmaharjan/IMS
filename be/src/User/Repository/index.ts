@@ -158,7 +158,7 @@ export const editUserProfile = async (
 
     return {
       status: 200,
-      message: "User updated successfully",
+      message: "Profile updated successfully",
       data: updatedUser.value, // Access the updated document from the result
     };
   } catch (error) {

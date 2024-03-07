@@ -1,10 +1,12 @@
 import AdminModal from "../modal/AdminModal";
 import { useGet } from "../../hooks/get/useGet";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 const Navbar = () => {
   const [isToolTipVisible, setIsToolTipVisible] = useState<boolean>(false);
   const [adminModal, setAdminModal] = useState<boolean>(false);
   const { response } = useGet("http://localhost:8000/user/api/profile");
+
+  const [adminProfilePicture, setAdminProfilePicture] = useState("");
 
   const handleMouseEnter = () => {
     setIsToolTipVisible(true);
@@ -17,12 +19,18 @@ const Navbar = () => {
     setAdminModal(true);
   };
 
+  useEffect(() => {
+    setAdminProfilePicture(response?.data.profile);
+  }, [response]);
+
   return (
     <>
       {adminModal && (
         <AdminModal
           {...response?.data}
           closeAdminModal={(value) => setAdminModal(value)}
+          setAdminProfilePicture={(value) => setAdminProfilePicture(value)}
+          adminProfilePicture={adminProfilePicture}
         />
       )}
       <div className="flex gap-6 items-center justify-end py-3 pr-7 cursor-pointer">
@@ -31,7 +39,7 @@ const Navbar = () => {
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
             className="rounded-full object-cover w-12 h-12"
-            src={response?.data.profile}
+            src={adminProfilePicture}
             alt={response?.data.username}
             onClick={handleAdminProfile}
           />
