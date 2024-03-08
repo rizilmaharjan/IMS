@@ -86,7 +86,7 @@ const Widgets = ({
       data = {
         title: "EARNINGS",
         isMoney: true,
-        link: "See Details",
+        // link: "See Details",
         icon: <MonetizationOnOutlinedIcon className="text-[green]" />,
         total: `$ ${earnings}`,
       };
