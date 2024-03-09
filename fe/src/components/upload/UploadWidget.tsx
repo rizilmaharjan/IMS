@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import { FaCamera } from "react-icons/fa";
 type TProps = {
   setProfileImage: (url: string) => void;
+  isEditActive?: boolean;
 };
 declare global {
   interface Window {
@@ -13,7 +14,7 @@ declare global {
 //     profileImage: (value: React.SetStateAction<string>) => void
 // }
 
-const UploadWidget = ({ setProfileImage }: TProps) => {
+const UploadWidget = ({ setProfileImage, isEditActive }: TProps) => {
   const cloudinaryRef = useRef();
   const widgetRef = useRef();
   useEffect(() => {
@@ -38,6 +39,7 @@ const UploadWidget = ({ setProfileImage }: TProps) => {
   return (
     <button
       type="button"
+      disabled={!isEditActive}
       // className="border bg-black text-white"
       // className="absolute top-4 left-4 text-xl"
       onClick={() => widgetRef.current && (widgetRef.current as any).open()}
