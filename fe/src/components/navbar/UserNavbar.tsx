@@ -1,6 +1,5 @@
 import { GiHamburgerMenu } from "react-icons/gi";
 import { useState } from "react";
-import SideBarModal from "../modal/SideBarModal";
 import { useEffect } from "react";
 import { useCustomContext } from "../../context/Context";
 import { useNavigate } from "react-router-dom";

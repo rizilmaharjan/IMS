@@ -126,11 +126,14 @@ export default function UserProfile() {
             <div className="w-1/2 h-96 relative">
               <img
                 className="object-cover w-full h-full"
-                src={response?.data.profile}
+                src={userInfo.profile}
                 alt="person"
               />
               <div className="top-4 left-4 text-xl">
-                <UploadWidget setProfileImage={setProfileImage} />
+                <UploadWidget
+                  isEditActive={isEditActive}
+                  setProfileImage={setProfileImage}
+                />
               </div>
             </div>
             {/* user details */}
