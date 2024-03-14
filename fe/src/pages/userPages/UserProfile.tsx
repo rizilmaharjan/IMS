@@ -51,16 +51,12 @@ export default function UserProfile() {
   };
 
   const setProfileImage = (url: string) => {
-    setUserInfo((prev) => {
-      if (prev) {
-        return {
-          ...prev,
-          profile: url,
-        };
-      } else {
-        return null;
-      }
-    });
+    setUserInfo((prev) => ({
+      username: prev?.username || "",
+      name: prev?.name || "",
+      email: prev?.email || "",
+      profile: url,
+    }));
   };
 
   useEffect(() => {

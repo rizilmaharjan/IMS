@@ -60,7 +60,15 @@ const Registration = () => {
               className="flex flex-col mt-1"
             >
               {inputDatas.map((input, ind) => (
-                <Input {...input} key={ind} reg={register} errors={errors} />
+                <Input
+                  type={input.type}
+                  msg={input.msg}
+                  val={input.val}
+                  regex={input.regex}
+                  key={ind}
+                  reg={register}
+                  errors={errors}
+                />
               ))}
               <button className="bg-black text-white md:w-2/3 py-2 mt-6 rounded-2xl">
                 Create Account
