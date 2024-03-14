@@ -23,7 +23,7 @@ type props = {
 type Data = {
   title: string;
   isMoney: boolean;
-  link: string;
+  link?: string;
   icon: JSX.Element;
   total?: number | string; // Adjust the type based on your use case
   redirect?: string; // Optional property
@@ -108,7 +108,7 @@ const Widgets = ({
             onClick={() => navigate(`/${data.redirect}`)}
             className="text-[12px] cursor-pointer border-b-2 border-gray-400 w-fit"
           >
-            {data && data.link}
+            {data ? data.link : ""}
           </span>
         </div>
         <div className="flex flex-col justify-between items-end">

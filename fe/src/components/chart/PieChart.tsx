@@ -10,7 +10,11 @@ type Products = {
   image: string;
   name: string;
   stock: number;
-  _id: string;
+  _id?: string;
+  userRoles: {
+    _id: string;
+    name: string;
+  };
 };
 type props = {
   width: number;
