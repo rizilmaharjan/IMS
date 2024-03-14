@@ -1,0 +1,36 @@
+name: Build MERN web application
+on: push
+jobs:
+  build-backend:
+    name: Build backend
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: setup nodejs environment
+      uses: actions/setup-node@v4
+      with:
+        node-version: 20
+
+    - name: Install backend NPM dependencies#
+      working-directory: be
+      run: npm install
+
+
+
+  build-frontend:
+    name: Build frontend
+    runs-on: ubuntu-latest
+    needs: build-backend
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Install Frontend NPM dependencies
+      working-directory: fe
+      run: npm install
+
+    - name: Build frontend
+      working-directory: fe
+      run: npm run build
