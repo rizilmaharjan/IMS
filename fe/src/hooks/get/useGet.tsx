@@ -2,8 +2,14 @@ import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import axios, { AxiosError, AxiosResponse } from "axios";
 
+import { AxiosResponse as BaseAxiosResponse } from "axios";
+
+export interface CustomAxiosResponse<T = any> extends BaseAxiosResponse<T> {
+  totalOrders?: number;
+}
+
 export const useGet = (url: string) => {
-  const [response, setResponse] = useState<AxiosResponse | null>(null);
+  const [response, setResponse] = useState<CustomAxiosResponse | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [fetchError, setFetchError] = useState<AxiosError | null>(null);
   useEffect(() => {

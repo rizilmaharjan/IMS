@@ -48,6 +48,7 @@ const ProductsContext = ({ children }: ProductsContextProps) => {
   }, [userOrder]);
   useEffect(() => {
     setTotalOrders(userOrder?.totalOrders);
+    console.log("total user order", userOrder);
   }, [userOrder]);
 
   return (
