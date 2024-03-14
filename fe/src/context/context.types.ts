@@ -7,6 +7,11 @@ export type Product = {
   image: string;
   name: string;
   stock: number;
+  userRoles: {
+    _id: string;
+    name: string;
+  };
+  type: "product";
 };
 
 export type User = {
@@ -27,6 +32,7 @@ export type User = {
 export type Order = {
   noOfProducts: number;
   product: {
+    _id?: string;
     amount: string;
     brand: string;
     category: string;
@@ -34,7 +40,11 @@ export type Order = {
     image: string;
     name: string;
     stock: number;
-    _id: string;
+    userRoles: {
+      _id: string;
+      name: string;
+    };
+    type: "product";
   };
   status: string;
   totalAmount: number;
@@ -50,6 +60,7 @@ export type Order = {
     _id: string;
   };
   _id: string;
+  type: "order";
 };
 
 export type TUserRole = {

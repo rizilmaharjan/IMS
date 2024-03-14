@@ -49,7 +49,9 @@ const Login = () => {
       }));
 
       localStorage.setItem("userRole", datas.data.userRoles.name);
-      localStorage.setItem("userId", datas.data._id);
+      if (datas.data._id) {
+        localStorage.setItem("userId", datas.data._id);
+      }
       // localStorage.setItem("userId", loggedInUser._id);
 
       navigate("/dashboard");

@@ -3,11 +3,12 @@ import { useCustomContext } from "../../context/Context";
 import UserPieChart from "../chart/PieChart";
 const Featured = () => {
   const { productData } = useCustomContext();
+  console.log("these are my product datas", productData);
 
   return (
     <>
       <div className="w-1/2 bg-white shadow-md">
-        {productData && (
+        {productData?.length > 0 && productData && (
           <UserPieChart
             width={600}
             height={500}

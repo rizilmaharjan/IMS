@@ -2,30 +2,48 @@ import { PieChart, Pie, Cell, Tooltip, Legend } from "recharts";
 import { useEffect, useState } from "react"; // Import useState
 import { Order, Product } from "../../context/context.types";
 
+type Products = {
+  amount: string;
+  brand: string;
+  category: string;
+  colors: string[];
+  image: string;
+  name: string;
+  stock: number;
+  _id: string;
+};
 type props = {
   width: number;
   height: number;
   radius: number;
-  datas: Product[] | Order[];
+  datas: Products[];
 };
-const UserPieChart = ({ datas, width, height, radius }: props) => {
-  const [pieChartData, setPieChartData] = useState<[] | any>([]);
 
-  console.log("datas sent in pie chart", datas);
+const UserPieChart = ({ datas, width, height, radius }: props) => {
+  const [pieChartData, setPieChartData] = useState<[] | any>(null);
+
+  // console.log("datas sent in pie chart", datas);
 
   useEffect(() => {
-    const categoryCounts = datas?.reduce((counts: any, item) => {
-      const category = item.category;
-      counts[category] = (counts[category] || 0) + 1;
-      return counts;
-    }, {});
+    // console.log("product datas inside the useeffect", datas);
+    if (datas?.length > 0 && datas) {
+      const categoryCounts = datas.reduce((counts: any, item: Products) => {
+        // console.log("item", item);
+        const category =
+          // item.type === "product" ? item.category : item?.product?.category;
+          item.category;
+        // console.log("category", category);
+        counts[category] = (counts[category] || 0) + 1;
+        return counts;
+      }, {});
 
-    const data = Object.keys(categoryCounts).map((category) => ({
-      name: category,
-      value: categoryCounts[category],
-    }));
+      const data = Object.keys(categoryCounts).map((category) => ({
+        name: category,
+        value: categoryCounts[category],
+      }));
 
-    setPieChartData(data);
+      setPieChartData(data);
+    }
 
     // console.log("pieChartData:", data);
 

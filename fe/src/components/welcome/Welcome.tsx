@@ -22,11 +22,11 @@ const Welcome = () => {
   const { response: orderResponse } = useGet(
     "http://localhost:8000/product/api/orders"
   );
+  const { totalOrders } = useCustomContext();
   const {
     productData,
     userData,
     orderInfo,
-    totalOrders,
     setTotalOrders,
     setOrderInfo,
     setUserData,

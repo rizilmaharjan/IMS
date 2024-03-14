@@ -48,6 +48,7 @@ export const useAxios = () => {
     try {
       const res = await axios.post(url, userData, config);
       setData(res.data);
+      console.log("login data", res.data);
       setFetchError(null);
     } catch (error: any) {
       setFetchError(error.response?.data);
