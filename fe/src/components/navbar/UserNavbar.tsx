@@ -8,7 +8,7 @@ type props = {
   openSideBar: boolean;
 };
 const UserNavbar = ({ setOpenSideBar, openSideBar }: props) => {
-  const { loggedInUser } = useCustomContext();
+  const { loggedInUser, userProfilePicture } = useCustomContext();
   const navigate = useNavigate();
   // const storedLoggedInfo = localStorage.getItem("LoggedInUser");
 
@@ -69,7 +69,7 @@ const UserNavbar = ({ setOpenSideBar, openSideBar }: props) => {
               <img
                 onClick={navigateToProfile}
                 className="w-14 h-14 object-cover rounded-full cursor-pointer"
-                src={loggedInUser.profile}
+                src={userProfilePicture}
                 alt="profilepicture"
               />
             )}

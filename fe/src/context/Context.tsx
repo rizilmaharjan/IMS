@@ -33,6 +33,7 @@ const ProductsContext = ({ children }: ProductsContextProps) => {
   const [orderInfo, setOrderInfo] = useState<Order[] | null>(null);
   const [status, setStatus] = useState("pending");
   const [totalOrders, setTotalOrders] = useState<number>();
+  const [userProfilePicture, setUserProfilePicture] = useState("");
 
   console.log("all product datas", productData);
 
@@ -63,6 +64,8 @@ const ProductsContext = ({ children }: ProductsContextProps) => {
         setUserData,
         status,
         setStatus,
+        setUserProfilePicture,
+        userProfilePicture,
         // productFetchError,
         orderInfo,
         // userFetchError,

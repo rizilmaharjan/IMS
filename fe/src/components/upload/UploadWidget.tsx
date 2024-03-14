@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import { FaCamera } from "react-icons/fa";
+import { useCustomContext } from "../../context/Context";
 type TProps = {
   setProfileImage: (url: string) => void;
   isEditActive?: boolean;
@@ -15,6 +16,7 @@ declare global {
 // }
 
 const UploadWidget = ({ setProfileImage, isEditActive }: TProps) => {
+  const { setUserProfilePicture } = useCustomContext();
   const cloudinaryRef = useRef();
   const widgetRef = useRef();
   useEffect(() => {
@@ -28,6 +30,7 @@ const UploadWidget = ({ setProfileImage, isEditActive }: TProps) => {
         function (error: any, result: any) {
           if (result && result.event === "success") {
             setProfileImage(result.info.secure_url);
+            setUserProfilePicture(result.info.secure_url);
             // profileImage(result.info.secure_url)
             // dispatch(setProfilePicture(result.info.secure_url))
           }

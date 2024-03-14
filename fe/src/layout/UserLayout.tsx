@@ -9,7 +9,7 @@ import Cookies from "js-cookie";
 import { useCustomContext } from "../context/Context";
 export default function UserLayout() {
   const [openSideBar, setOpenSideBar] = useState(false);
-  const { setLoggedInUser } = useCustomContext();
+  const { setLoggedInUser, setUserProfilePicture } = useCustomContext();
   const location = useLocation();
 
   useEffect(() => {
@@ -27,6 +27,7 @@ export default function UserLayout() {
         );
 
         setLoggedInUser(res.data.data);
+        setUserProfilePicture(res.data?.data.profile);
       } catch (error) {}
     };
     fetchLoggedInUserData();
