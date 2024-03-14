@@ -73,7 +73,7 @@ const AdminModal = ({
               alt={name}
             />
             <div className="absolute top-4 left-4 text-xl">
-              <UploadWidget setProfileImage={setProfileImage} />
+              <UploadWidget isEditActive={true} setProfileImage={setProfileImage} />
             </div>
             <div
               onClick={handleProfilePicture}
